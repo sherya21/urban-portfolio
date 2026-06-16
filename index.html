@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shreya Bansal, Urban Data Strategist · Geospatial Analyst · Storyteller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    @media(pointer:fine){*{cursor:none}}
+
+    :root{
+      --bg:    #0F1014;
+      --bg2:   #181A1F;
+      --bg3:   #202228;
+      --text:  #F0EDE6;
+      --dim:   rgba(240,237,230,.52);
+      --faint: rgba(240,237,230,.22);
+      --rule:  rgba(240,237,230,.07);
+      --rule2: rgba(240,237,230,.13);
+      /* main brand */
+      --blue:  #1B4FD8;
+      --blue-lt:#3B6FFF;
+      --blue-dim:rgba(27,79,216,.12);
+      /* project accents */
+      --lyft-c:  #9B59B6;   /* purple, product/mobility */
+      --food-c:  #2B7CB8;   /* blue, equity/social infra */
+      --usvi-c:  #00C9A7;   /* teal, consulting/strategy */
+      --display:'Space Grotesk',sans-serif;
+      --serif:  'DM Serif Display',Georgia,serif;
+      --body:   'Inter',sans-serif;
+    }
+
+    html{background:var(--bg);scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--body);
+      -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+    /* ── CURSOR (desktop only) ── */
+    #cur,#cdot{position:fixed;pointer-events:none;z-index:9999;
+      transform:translate(-50%,-50%)}
+    #cur{width:18px;height:18px;border:1.5px solid rgba(255,255,255,.55);
+      border-radius:50%;
+      transition:width .18s,height .18s,border-color .18s,background .18s}
+    #cdot{width:6px;height:6px;background:var(--blue-lt);border-radius:50%}
+    body.hov #cur{width:28px;height:28px;
+      background:var(--blue-dim);border-color:var(--blue-lt)}
+    @media(pointer:coarse){#cur,#cdot{display:none}}
+
+    /* ══════════════════════════
+       SITE NAV
+    ══════════════════════════ */
+    .sitenav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1rem 3rem;
+      background:rgba(15,16,20,.9);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--rule);
+    }
+    .sitenav-name{font-family:var(--display);font-size:.85rem;font-weight:800;
+      letter-spacing:.1em;text-transform:uppercase;color:var(--text);
+      text-decoration:none;transition:color .2s}
+    .sitenav-name:hover{color:var(--blue-lt)}
+    .sitenav-links{display:flex;gap:2rem}
+    .sitenav-links a{font-family:var(--display);font-size:.78rem;font-weight:600;
+      letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+      text-decoration:none;transition:color .2s}
+    .sitenav-links a:hover{color:var(--text)}
+    @media(max-width:600px){
+      .sitenav{padding:.9rem 1.25rem}
+      .sitenav-links{gap:1.25rem}
+      .sitenav-links a{font-size:.58rem}
+    }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    .hero{
+      min-height:100svh;display:flex;flex-direction:column;
+      justify-content:center;padding:7rem 3rem 5rem;
+      position:relative;overflow:hidden;
+    }
+    .hero-bg{position:absolute;inset:0;
+      background-image:url('images/bw_main.png');
+      background-size:cover;background-position:center;
+      opacity:.1;filter:saturate(1.6)}
+    .hero-bg-grad{position:absolute;inset:0;
+      background:radial-gradient(ellipse at 15% 55%,
+        rgba(15,16,20,.2) 0%,rgba(15,16,20,.9) 100%)}
+    .hero-inner{position:relative;z-index:1;max-width:1000px}
+
+    .hero-eyebrow{font-family:var(--display);font-size:1rem;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--blue-lt);
+      margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+    .hero-eyebrow::before{content:'';display:inline-block;
+      width:20px;height:2px;background:var(--blue-lt)}
+
+    .hero-h{font-family:var(--display);font-weight:700;
+      font-size:clamp(2.6rem,7vw,6.5rem);
+      line-height:.97;letter-spacing:-.03em;color:var(--text);margin-bottom:1.5rem}
+    .hero-h em{font-family:var(--serif);font-style:italic;
+      font-weight:400;color:var(--blue-lt)}
+
+    .hero-sub{font-size:clamp(.9rem,1.5vw,1.05rem);font-weight:300;
+      line-height:1.78;color:var(--dim);max-width:560px;margin-bottom:2.75rem}
+
+    .hero-meta{display:flex;flex-wrap:wrap;gap:1.5rem 3rem;
+      padding-top:2rem;border-top:1px solid var(--rule2)}
+    .hm{font-family:var(--display);font-size:clamp(.82rem,1.4vw,.95rem);font-weight:500;
+      letter-spacing:.06em;color:var(--faint);line-height:1.5}
+    .hm strong{color:var(--text);font-weight:600;font-size:1.05em}
+
+    .hero-scroll{position:absolute;bottom:2rem;left:50%;
+      transform:translateX(-50%);
+      font-family:var(--display);font-size:.55rem;font-weight:600;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--faint);
+      display:flex;flex-direction:column;align-items:center;gap:.4rem;
+      animation:bob 2.2s ease-in-out infinite}
+    .hero-scroll::after{content:'↓';font-size:.85rem}
+    @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}
+      50%{transform:translateX(-50%) translateY(5px)}}
+    @media(max-width:600px){
+      .hero{padding:6rem 1.25rem 4rem}
+      .hero-meta{gap:1rem 2rem}
+      .hero-scroll{display:none}
+    }
+
+    /* ══════════════════════════
+       SECTION WRAPPER
+    ══════════════════════════ */
+    .wrap{max-width:1280px;margin:0 auto;padding:0 3rem}
+    @media(max-width:600px){.wrap{padding:0 1.25rem}}
+
+    .section-hdr{
+      display:flex;justify-content:space-between;align-items:baseline;
+      padding:4.5rem 0 2.5rem;
+      border-bottom:1px solid var(--rule2);
+    }
+    .section-hdr+*{margin-top:2px}
+    .sh-title{font-family:var(--display);font-weight:700;
+      font-size:clamp(1.1rem,2.5vw,1.6rem);letter-spacing:-.02em;color:var(--text)}
+    .sh-count{font-family:var(--display);font-size:.6rem;font-weight:500;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+
+    /* ══════════════════════════
+       FEATURED PROJECT CARDS
+    ══════════════════════════ */
+    .projects{display:flex;flex-direction:column;gap:2px;padding-bottom:2px}
+
+    .pcard{
+      display:grid;grid-template-columns:1.1fr 1fr;
+      min-height:440px;text-decoration:none;color:var(--text);
+      position:relative;overflow:hidden;
+      opacity:0;transform:translateY(20px);
+      transition:opacity .55s ease,transform .55s ease;
+      align-items:stretch;
+    }
+    .pcard.vis{opacity:1;transform:none}
+    .pcard.flip{direction:rtl}
+    .pcard.flip>*{direction:ltr}
+
+    /* map panel */
+    .pc-map{position:relative;overflow:hidden;background:var(--bg2);min-height:380px}
+    .pc-img{position:absolute;inset:0;background-size:cover;background-position:center;
+      filter:brightness(.68) saturate(1.1);
+      transition:transform .55s ease,filter .4s ease}
+    .pcard:hover .pc-img{transform:scale(1.04);filter:brightness(.82) saturate(1.25)}
+    .pc-overlay{position:absolute;inset:0;
+      background:linear-gradient(135deg,transparent 35%,rgba(15,16,20,.6) 100%)}
+    .pc-maplabel{position:absolute;bottom:1.1rem;left:1.25rem;
+      font-family:var(--display);font-size:.56rem;font-weight:600;
+      letter-spacing:.12em;text-transform:uppercase;
+      background:rgba(15,16,20,.72);backdrop-filter:blur(6px);
+      padding:.28rem .7rem;color:var(--faint)}
+
+    /* lens pill, the key differentiator */
+    .pc-lens{
+      position:absolute;top:1.25rem;left:1.25rem;
+      font-family:var(--display);font-size:.55rem;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;
+      padding:.3rem .8rem;border-radius:2px;
+      background:rgba(15,16,20,.75);backdrop-filter:blur(6px);
+    }
+
+    /* content panel */
+    .pc-content{
+      background:var(--bg2);padding:2.75rem 3rem;
+      display:flex;flex-direction:column;justify-content:space-between;
+      border-left:1px solid var(--rule);
+      transition:background .3s;
+    }
+    .pcard:hover .pc-content{background:var(--bg3)}
+
+    .pc-tag{font-family:var(--display);font-size:.56rem;font-weight:700;
+      letter-spacing:.16em;text-transform:uppercase;
+      margin-bottom:1.1rem;display:flex;align-items:center;gap:.55rem}
+    .pc-tag::before{content:'';display:inline-block;width:14px;height:2px}
+
+    .pc-q{font-family:var(--display);font-weight:700;
+      font-size:clamp(1.1rem,1.8vw,1.5rem);
+      line-height:1.18;letter-spacing:-.02em;color:var(--text);margin-bottom:1.1rem}
+
+    .pc-desc{font-size:.86rem;font-weight:300;line-height:1.75;
+      color:var(--dim);margin-bottom:1.5rem}
+
+    .pc-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1.75rem}
+    .chip{font-family:var(--display);font-size:.54rem;font-weight:600;
+      letter-spacing:.1em;text-transform:uppercase;
+      border:1px solid var(--rule2);padding:.18rem .5rem;color:var(--faint)}
+
+    .pc-bottom{display:flex;justify-content:space-between;align-items:center;
+      padding-top:1.25rem;border-top:1px solid var(--rule)}
+    .pc-stat-v{font-family:var(--display);font-weight:700;
+      font-size:1.75rem;line-height:1}
+    .pc-stat-l{font-size:.58rem;font-weight:400;color:var(--faint);
+      letter-spacing:.06em;margin-top:.18rem}
+    .pc-cta{font-family:var(--display);font-size:.6rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;
+      padding:.5rem 1.1rem;color:#fff;
+      opacity:0;transform:translateX(8px);
+      transition:opacity .22s,transform .22s}
+    .pcard:hover .pc-cta{opacity:1;transform:none}
+
+    /* mobile: stack vertically */
+    @media(max-width:760px){
+      .pcard,.pcard.flip{grid-template-columns:1fr;direction:ltr;min-height:auto}
+      .pc-map{min-height:52vw}
+      .pc-content{padding:2rem 1.25rem}
+      .pcard:hover .pc-cta{opacity:1;transform:none}
+    }
+
+    /* ══════════════════════════
+       ARCHIVE GRID
+    ══════════════════════════ */
+    .archive-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:1px;background:var(--rule);
+      margin-bottom:2px;
+    }
+    .arc-card{
+      background:var(--bg2);padding:2rem;
+      text-decoration:none;color:var(--text);
+      transition:background .25s;
+      opacity:0;transform:translateY(16px);
+      transition:opacity .5s ease,transform .5s ease,background .25s;
+    }
+    .arc-card.vis{opacity:1;transform:none}
+    .arc-card:hover{background:var(--bg3)}
+    .arc-tag{font-family:var(--display);font-size:.54rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--blue-lt);
+      margin-bottom:.75rem}
+    .arc-title{font-family:var(--display);font-weight:600;font-size:.95rem;
+      line-height:1.25;letter-spacing:-.01em;color:var(--text);margin-bottom:.6rem}
+    .arc-desc{font-size:.8rem;font-weight:300;line-height:1.65;color:var(--dim)}
+    .arc-chips{display:flex;flex-wrap:wrap;gap:.28rem;margin-top:.9rem}
+    .arc-arrow{display:block;margin-top:1.25rem;font-family:var(--display);
+      font-size:.58rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--faint);
+      transition:color .2s}
+    .arc-card:hover .arc-arrow{color:var(--blue-lt)}
+    @media(max-width:760px){
+      .archive-grid{grid-template-columns:1fr}
+    }
+    @media(min-width:761px) and (max-width:1024px){
+      .archive-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* ══════════════════════════
+       ABOUT
+    ══════════════════════════ */
+    .about-wrap{
+      background:var(--bg2);
+      border-top:1px solid var(--rule2);
+      border-bottom:1px solid var(--rule2);
+    }
+    .about-inner{
+      max-width:1280px;margin:0 auto;padding:5rem 3rem;
+      display:grid;grid-template-columns:280px 1fr;gap:6rem;align-items:start;
+    }
+    .about-left{}
+    .about-label{font-family:var(--display);font-size:.6rem;font-weight:700;
+      letter-spacing:.18em;text-transform:uppercase;color:var(--blue-lt);
+      margin-bottom:1.75rem;display:flex;align-items:center;gap:.7rem}
+    .about-label::before{content:'';display:inline-block;
+      width:16px;height:2px;background:var(--blue-lt)}
+    .about-name{font-family:var(--display);font-weight:700;
+      font-size:2.6rem;letter-spacing:-.03em;line-height:.98;
+      color:var(--text);margin-bottom:.45rem}
+    .about-role{font-family:var(--serif);font-style:italic;
+      font-size:1.2rem;color:var(--dim);line-height:1.35;margin-bottom:2rem}
+    .about-links{display:flex;flex-direction:column;gap:.65rem}
+    .about-link{font-family:var(--display);font-size:.62rem;font-weight:600;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+      text-decoration:none;display:flex;align-items:center;gap:.6rem;
+      transition:color .2s}
+    .about-link::before{content:'→';color:var(--blue-lt)}
+    .about-link:hover{color:var(--text)}
+
+    .about-bio p{font-size:.98rem;font-weight:300;line-height:1.85;
+      color:var(--dim);margin-bottom:1.1rem}
+    .about-bio p strong{font-weight:500;color:var(--text)}
+    .about-bio p em{font-style:italic;color:rgba(240,237,230,.75)}
+    .about-tags{display:flex;flex-wrap:wrap;gap:.45rem;
+      margin-top:2rem;padding-top:2rem;border-top:1px solid var(--rule)}
+    .about-tag{font-family:var(--display);font-size:.58rem;font-weight:500;
+      letter-spacing:.1em;text-transform:uppercase;
+      background:var(--bg3);padding:.28rem .7rem;
+      color:var(--dim);border:1px solid var(--rule2)}
+    @media(max-width:760px){
+      .about-inner{grid-template-columns:1fr;gap:2.5rem;padding:3.5rem 1.25rem}
+    }
+
+    /* ══════════════════════════
+       CONTACT
+    ══════════════════════════ */
+    .contact-wrap{max-width:1280px;margin:0 auto;padding:5rem 3rem 6rem;
+      display:flex;justify-content:space-between;align-items:flex-end;
+      flex-wrap:wrap;gap:2.5rem}
+    .contact-left h2{font-family:var(--display);font-weight:700;
+      font-size:clamp(2.5rem,5vw,4rem);line-height:.97;
+      letter-spacing:-.03em;color:var(--text);margin-bottom:.9rem}
+    .contact-left h2 em{font-family:var(--serif);font-style:italic;
+      font-weight:400;color:var(--blue-lt)}
+    .contact-left p{font-size:.88rem;font-weight:300;color:var(--dim);
+      line-height:1.72;max-width:400px}
+    .contact-right{display:flex;flex-direction:column;align-items:flex-end;gap:1rem}
+    .contact-social{display:flex;gap:1.5rem}
+    .contact-social a{font-family:var(--display);font-size:1rem;font-weight:600;color: #1B4FD8;
+      letter-spacing:.12em;text-transform:uppercase;
+      text-decoration:none;transition:color .5s}
+    .contact-social a:hover{color:var(--text)}
+    .contact-note{font-size: 1rem;font-weight:300;
+      font-style:italic}
+    @media(max-width:760px){
+      .contact-wrap{padding:3.5rem 1.25rem 5rem;flex-direction:column;align-items:flex-start}
+      .contact-right{align-items:flex-start}
+    }
+
+    footer{border-top:1px solid var(--rule);padding:1.5rem 3rem;
+      max-width:1280px;margin:0 auto;
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+    footer p{font-family:var(--display);font-size:.56rem;font-weight:500;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+    @media(max-width:600px){footer{padding:1.25rem}}
+
+    /* ══════════════════════════
+       PROJECT DETAIL PAGES
+    ══════════════════════════ */
+
+    .pnav{position:sticky;top:0;z-index:200;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1rem 3rem;
+      background:rgba(15,16,20,.95);backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--rule)}
+    .pnav-back{font-family:var(--display);font-size:.78rem;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+      background:none;border:none;
+      display:flex;align-items:center;gap:.45rem;transition:color .2s}
+    .pnav-back::before{content:'←'}
+    .pnav-back:hover{color:var(--text)}
+    .pnav-name{font-family:var(--display);font-size:.78rem;font-weight:600;
+      letter-spacing:.12em;color:var(--faint)}
+    .pnav-links{display:flex;gap:1.75rem}
+    .pnav-links a{font-family:var(--display);font-size:.78rem;font-weight:600;
+      letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+      text-decoration:none;transition:color .2s}
+    .pnav-links a:hover{color:var(--text)}
+    @media(max-width:600px){
+      .pnav{padding:.9rem 1.25rem}
+      .pnav-name{display:none}
+    }
+
+    /* scrollytelling */
+    .story{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 56px)}
+    .story-text{padding:3.5rem 3rem 8rem;overflow-y:auto;scrollbar-width:none}
+    .story-text::-webkit-scrollbar{display:none}
+    .story-map{position:sticky;top:56px;height:calc(100vh - 56px);
+      overflow:hidden;background:#060810}
+    .mslide{position:absolute;inset:0;background-size:cover;background-position:center;
+      opacity:0;transition:opacity .5s ease}
+    .mslide.on{opacity:1}
+    .mcap{position:absolute;bottom:1.25rem;left:1.25rem;
+      font-family:var(--display);font-size:.55rem;font-weight:600;
+      letter-spacing:.1em;text-transform:uppercase;
+      color:rgba(255,255,255,.38);
+      background:rgba(0,0,0,.55);backdrop-filter:blur(6px);padding:.35rem .7rem}
+
+    /* story text elements */
+    .s-tag{font-family:var(--display);font-size:.58rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;
+      display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+    .s-q{font-family:var(--display);font-weight:700;
+      font-size:clamp(1.4rem,2.5vw,2.2rem);
+      line-height:1.1;letter-spacing:-.025em;color:var(--text);margin-bottom:1rem}
+    .s-p{font-size:.88rem;font-weight:300;line-height:1.8;color:var(--dim);
+      max-width:440px;margin-bottom:1rem}
+    .s-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:2.5rem}
+    .s-stats{display:flex;gap:2.5rem;margin-bottom:3rem;flex-wrap:wrap}
+    .sv{font-family:var(--display);font-weight:700;font-size:2.2rem;line-height:1}
+    .sl{font-size:.58rem;font-weight:400;color:var(--faint);
+      letter-spacing:.06em;margin-top:.18rem}
+
+    .step{padding:2.25rem 0;border-top:1px solid var(--rule);max-width:440px;
+      opacity:.28;transform:translateX(-8px);
+      transition:opacity .38s ease,transform .38s ease}
+    .step.active{opacity:1;transform:none}
+    .sn{font-family:var(--display);font-size:.54rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;margin-bottom:.6rem}
+    .st{font-family:var(--display);font-weight:600;font-size:1.05rem;
+      line-height:1.25;letter-spacing:-.01em;color:var(--text);margin-bottom:.6rem}
+    .sb{font-size:.86rem;font-weight:300;line-height:1.78;color:var(--dim)}
+    .sb strong{font-weight:500;color:rgba(240,237,230,.8)}
+
+    .s-recs{padding:2rem 0;border-top:1px solid var(--rule);max-width:440px}
+    .s-rec-lbl{font-family:var(--display);font-size:.56rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.1rem}
+    .s-rec{padding:.7rem 0;border-top:1px solid var(--rule);
+      font-size:.82rem;font-weight:300;line-height:1.7;color:var(--dim)}
+    .s-rec strong{font-weight:500;color:rgba(240,237,230,.75)}
+    .s-cta{padding:2rem 0;display:flex;gap:.65rem;flex-wrap:wrap}
+    .btn-p{font-family:var(--display);font-size:.6rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;padding:.6rem 1.3rem;
+      text-decoration:none;color:#fff;border:none;transition:opacity .2s}
+    .btn-p:hover{opacity:.82}
+    .btn-s{font-family:var(--display);font-size:.6rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;padding:.6rem 1.3rem;
+      background:none;border:1px solid var(--rule2);color:var(--dim);
+      transition:border-color .2s,color .2s}
+    .btn-s:hover{border-color:var(--text);color:var(--text)}
+
+    /* mobile: story stacks */
+    @media(max-width:760px){
+      .story{grid-template-columns:1fr;height:auto;display:block}
+      .story-map{position:relative;top:0;height:56vw;display:block}
+      .story-text{padding:2rem 1.25rem 5rem}
+      .step{opacity:1;transform:none}
+    }
+
+    /* simple hero for food/usvi */
+    .sh{position:relative;min-height:68vh;display:flex;
+      align-items:flex-end;overflow:hidden}
+    .sh-bg{position:absolute;inset:0;background-size:cover;background-position:center;
+      filter:brightness(.52) saturate(1.15)}
+    .sh-grad{position:absolute;inset:0;
+      background:linear-gradient(to bottom,transparent 0%,
+        rgba(15,16,20,.5) 50%,rgba(15,16,20,.97) 100%)}
+    .sh-c{position:relative;z-index:1;padding:2.5rem 3rem 3.25rem;
+      display:flex;justify-content:space-between;align-items:flex-end;
+      gap:2rem;flex-wrap:wrap;width:100%}
+    .sh-l{max-width:620px}
+    .sh-stats{display:flex;gap:2rem;flex-wrap:wrap}
+    .shv{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1}
+    .shl{font-size:.58rem;font-weight:400;color:var(--faint);
+      letter-spacing:.06em;margin-top:.18rem}
+    @media(max-width:600px){
+      .sh{min-height:55vw}
+      .sh-c{padding:1.5rem 1.25rem 2rem;flex-direction:column;align-items:flex-start}
+    }
+
+    .p-body{display:grid;grid-template-columns:1fr 1.8fr;
+      border-top:1px solid var(--rule)}
+    .p-side{padding:2.25rem;border-right:1px solid var(--rule)}
+    .p-side-lbl{font-family:var(--display);font-size:.56rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.25rem}
+    .p-find{padding:.85rem 0;border-top:1px solid var(--rule)}
+    .p-find:last-child{border-bottom:1px solid var(--rule)}
+    .p-fn{font-family:var(--display);font-size:.52rem;font-weight:700;
+      letter-spacing:.12em;color:var(--faint);margin-bottom:.28rem}
+    .p-find p{font-size:.82rem;font-weight:300;line-height:1.72;color:var(--dim)}
+    .p-find strong{font-weight:500;color:rgba(240,237,230,.78)}
+    .p-main{padding:2.25rem 3rem}
+    .p-main p{font-size:.93rem;font-weight:300;line-height:1.85;
+      color:var(--dim);margin-bottom:1.1rem}
+    .p-main strong{font-weight:500;color:rgba(240,237,230,.8)}
+    .p-main h3{font-family:var(--display);font-size:.56rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;margin:1.75rem 0 .8rem}
+    .p-cta{padding:1.75rem 3rem;display:flex;justify-content:space-between;
+      align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--rule)}
+    .p-cta p{font-family:var(--display);font-size:.56rem;font-weight:500;
+      letter-spacing:.08em;color:var(--faint)}
+    .p-cta a{font-family:var(--display);font-size:.6rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+      border-bottom:1px solid;padding-bottom:2px;transition:opacity .2s}
+    .p-cta a:hover{opacity:.7}
+    .p-other{padding:1.25rem 3rem;display:flex;gap:.6rem;align-items:center;
+      flex-wrap:wrap;border-top:1px solid var(--rule)}
+    .p-ol{font-family:var(--display);font-size:.52rem;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;
+      color:var(--faint);margin-right:.5rem}
+    .p-ob{font-family:var(--display);font-size:.56rem;font-weight:600;
+      letter-spacing:.08em;text-transform:uppercase;
+      border:1px solid var(--rule2);padding:.38rem .85rem;
+      background:none;color:var(--dim);transition:border-color .2s,color .2s}
+    .p-ob:hover{border-color:rgba(255,255,255,.35);color:var(--text)}
+    @media(max-width:760px){
+      .p-body{grid-template-columns:1fr}
+      .p-side{border-right:none;border-bottom:1px solid var(--rule)}
+      .p-side,.p-main,.p-cta,.p-other{padding-left:1.25rem;padding-right:1.25rem}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{transition:none!important;animation:none!important}
+      .pcard,.arc-card{opacity:1;transform:none}
+      .step{opacity:1;transform:none}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div><div id="cdot"></div>
+
+<!-- ══════════════════════════
+     HOME
+══════════════════════════ -->
+<div id="home">
+
+  <nav class="sitenav">
+    <a href="#" class="sitenav-name" onclick="showHome();return false">Shreya Bansal</a>
+    <div class="sitenav-links">
+      <a href="#work" onclick="showHome();return false">Work</a>
+      <a href="#about" onclick="showHome();return false">About</a>
+      <a href="#contact" onclick="showHome();return false">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-bg-grad"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Urban Data Strategist · Geospatial Analyst · Storyteller</p>
+      <h1 class="hero-h">
+        Spatial analysis<br>and data strategy<br>for <em>cities.</em>
+      </h1>
+      <p class="hero-sub">
+        I work at the intersection of geospatial analysis, urban policy, and data design , 
+        translating complex city systems into clear findings that decision-makers can act on.
+        My work spans mobility, food equity, and civic technology across the US and beyond.
+      </p>
+      <div class="hero-meta">
+        <div class="hm"><strong>MCP</strong> University of Pennsylvania </div>
+        <div class="hm"><strong>Background</strong> Design + Architecture + GIS</div>
+        <div class="hm"><strong>Tools</strong> R · Python · ArcGIS</div>
+        <div class="hm"><strong>Analyst at</strong> Climate Policy Initiative </div>
+        <div class="hm"><strong>Collaborated with</strong> Lyft Urban Solutions · Ocean Conservancy · World Resources Institute </div>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- FEATURED WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-hdr">
+        <h2 class="sh-title">Featured Work</h2>
+        <span class="sh-count">03 projects</span>
+      </div>
+    </div>
+
+    <div class="wrap" style="padding-top:0;padding-bottom:0">
+      <div class="projects">
+
+        <!-- Bay Wheels -->
+        <a class="pcard" href="baywheels.html">
+          <div class="pc-map">
+            <div class="pc-img" style="background-image:url('images/bw_main.png')"></div>
+            <div class="pc-overlay"></div>
+            <div class="pc-lens" style="color:var(--lyft-c);border:1px solid var(--lyft-c)">
+              Product Analysis
+            </div>
+            <div class="pc-maplabel">SF · San Jose · East Bay</div>
+          </div>
+          <div class="pc-content">
+            <div>
+              <p class="pc-tag" style="color:var(--lyft-c)">
+                <span style="display:inline-block;width:14px;height:2px;background:var(--lyft-c)"></span>
+                Mobility · Private Sector · 2025
+              </p>
+              <h3 class="pc-q">
+                Do urban products work, and <span style="color:var(--lyft-c)">for whom?</span>
+              </h3>
+              <p class="pc-desc">
+                Logistic regression across three Bay Area cities to predict which Bay Wheels stations actually function as last-mile transit connectors. Developed independently, shared with Lyft's public policy team twice.
+              </p>
+              <div class="pc-chips">
+                <span class="chip">R</span>
+                <span class="chip">Logistic Regression</span>
+                <span class="chip">BART · Caltrain</span>
+                <span class="chip">Lyft Bay Wheels</span>
+              </div>
+            </div>
+            <div class="pc-bottom">
+              <div>
+                <div class="pc-stat-v" style="color:var(--lyft-c)">78%</div>
+                <div class="pc-stat-l">Model accuracy</div>
+              </div>
+              <div class="pc-cta" style="background:var(--lyft-c)">Read the analysis →</div>
+            </div>
+          </div>
+        </a>
+
+        <!-- NYC Food -->
+        <a class="pcard flip" href="nyc-food.html">
+          <div class="pc-map">
+            <div class="pc-img" style="background-image:url('images/nyc_main.png');filter:brightness(.65) saturate(1.2)"></div>
+            <div class="pc-overlay"></div>
+            <div class="pc-lens" style="color:var(--food-c);border:1px solid var(--food-c)">
+              Social Infrastructure
+            </div>
+            <div class="pc-maplabel">New York City, all 5 boroughs</div>
+          </div>
+          <div class="pc-content">
+            <div>
+              <p class="pc-tag" style="color:var(--food-c)">
+                <span style="display:inline-block;width:14px;height:2px;background:var(--food-c)"></span>
+                Food Equity · Public Interest · 2024
+              </p>
+              <h3 class="pc-q">
+                Is the city working for <span style="color:var(--food-c)">everyone?</span>
+              </h3>
+              <p class="pc-desc">
+                Spatial analysis of SNAP reliance and grocery access across NYC neighborhoods. Published during the 30-Day Map Challenge, led to an introduction to the NYC Mayor's Office of Food Policy and an ongoing immigrant food access study with Hunter College.
+              </p>
+              <div class="pc-chips">
+                <span class="chip">GIS</span>
+                <span class="chip">SNAP Data</span>
+                <span class="chip">Food Equity</span>
+                <span class="chip">Census ACS</span>
+              </div>
+            </div>
+            <div class="pc-bottom">
+              <div>
+                <div class="pc-stat-v" style="color:var(--food-c);font-size:1.2rem;line-height:1.25">Research project<br> with NYC non profits </div>
+                <div class="pc-stat-l">Collaboration ongoing</div>
+              </div>
+              <div class="pc-cta" style="background:var(--food-c)">See the map →</div>
+            </div>
+          </div>
+        </a>
+
+        <!-- USVI -->
+        <a class="pcard" href="usvi.html">
+          <div class="pc-map" style="background:#0D1A2A">
+            <div class="pc-img" style="background-image:url('images/usvi_main.png')"></div>
+            <div class="pc-overlay"></div>
+            <div class="pc-lens" style="color:var(--usvi-c);border:1px solid var(--usvi-c)">
+              Strategy & Consulting
+            </div>
+            <div class="pc-maplabel">St. Thomas · St. John · USVI</div>
+          </div>
+          <div class="pc-content">
+            <div>
+              <p class="pc-tag" style="color:var(--usvi-c)">
+                <span style="display:inline-block;width:14px;height:2px;background:var(--usvi-c)"></span>
+                Civic Tech · Government · 2023
+              </p>
+              <h3 class="pc-q">
+                How can a city manage its <span style="color:var(--usvi-c)">data better?</span>
+              </h3>
+              <p class="pc-desc">
+                Data roadmap, permitting dashboard, and open data portal for the USVI government, turning 600+ scattered datasets into a working data infrastructure for climate resilience planning in St. Thomas.
+              </p>
+              <div class="pc-chips">
+                <span class="chip">GIS</span>
+                <span class="chip">Data Strategy</span>
+                <span class="chip">ArcGIS</span>
+                <span class="chip">Govt. Client</span>
+              </div>
+            </div>
+            <div class="pc-bottom">
+              <div>
+                <div class="pc-stat-v" style="color:var(--usvi-c)">600+</div>
+                <div class="pc-stat-l">Datasets catalogued</div>
+              </div>
+              <div class="pc-cta" style="background:var(--usvi-c);color:#000">Explore →</div>
+            </div>
+          </div>
+        </a>
+
+      </div><!-- /projects -->
+    <div style="height:4rem"></div>    </div>
+
+    <!-- ARCHIVE -->
+    <div class="wrap" style="padding-top:0">
+      <div class="section-hdr" style="padding-top:3.5rem">
+        <h2 class="sh-title">More Work</h2>
+        <span class="sh-count">Add projects here as you build them</span>
+      </div>
+      <div class="archive-grid">
+
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/5_Migration/" target="_blank">
+          <div class="arc-tag">Migration · Global</div>
+          <div class="arc-title">Spatial analysis of the refugee crisis</div>
+          <div class="arc-desc">Mapping migrant fatalities, refugee movements, and the relationship between political instability and displacement across the Mediterranean and North America.</div>
+          <div class="arc-chips">
+            <span class="chip">GIS</span><span class="chip">R</span><span class="chip">ArcGIS Storymap</span>
+          </div>
+          <span class="arc-arrow">View project →</span>
+        </a>
+
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/6_UrbanOcean/" target="_blank">
+          <div class="arc-tag">Climate · 12 Cities</div>
+          <div class="arc-title">Urban marine litter risk dashboard</div>
+          <div class="arc-desc">Geospatial ML to predict marine litter accumulation risk across 12 Urban Ocean cities for Ocean Conservancy's zero-waste pilot site selection.</div>
+          <div class="arc-chips">
+            <span class="chip">R</span><span class="chip">Random Forest</span><span class="chip">Dashboard</span>
+          </div>
+          <span class="arc-arrow">View project →</span>
+        </a>
+
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/4_OnTrack/" target="_blank">
+          <div class="arc-tag">Transit · New Jersey</div>
+          <div class="arc-title">Predicting NJ Transit train delays</div>
+          <div class="arc-desc">Can we repair tracks before they break? Using delay prediction modeling to identify stations at highest risk of infrastructure failure.</div>
+          <div class="arc-chips">
+            <span class="chip">R</span><span class="chip">Prediction Model</span><span class="chip">Transit Data</span>
+          </div>
+          <span class="arc-arrow">View project →</span>
+        </a>
+
+      </div><!-- /archive-grid -->
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-wrap" id="about">
+    <div class="about-inner">
+      <div class="about-left">
+        <p class="about-label">About me</p>
+        <h2 class="about-name">Shreya<br>Bansal</h2>
+        <p class="about-role">Urban Data Strategist<br>Geospatial Analyst · Storyteller</p>
+        <div class="about-links">
+          <a href="https://linkedin.com/in/shreya21bansal" target="_blank" class="about-link">LinkedIn</a>
+          <a href="https://sherya21.github.io/Portfolio/" target="_blank" class="about-link">Full Portfolio</a>
+        </div>
+      </div>
+      <div>
+        <div class="about-bio">
+          <p>
+            I'm an urban data strategist and geospatial analyst based in San Francisco, with a background in 
+            <strong>architecture and a Master of City Planning from Penn.</strong> I came to data through cities, 
+            which means I approach spatial analysis with an understanding of how urban systems actually work, 
+            not just how to model them.
+          </p>
+          <p>
+            My work sits at the intersection of <strong>geospatial analysis, data visualization, and urban policy.</strong> 
+            I build regression models, interactive maps, and data products that help public agencies, 
+            technology companies, and civic organizations make better decisions about how cities function.
+          </p>
+          <p>
+            I help cities and governments understand how they're investing in climate action and how to mobilize more resources toward net-zero goals, combining rigorous data analysis with compelling visual storytelling to turn complex information into clear decisions.
+          </p>
+          <p>
+            I've collaborated with <strong>Lyft's public policy team</strong> on bike share strategy across the Bay Area, 
+            collaborated with a project manager at <strong>Ocean Conservancy</strong> to produce a tool prototype, 
+            and delivered a data infrastructure strategy for the <strong>US Virgin Islands government</strong> 
+            to support climate resilience planning. My work spans mobility, food equity, climate resilience, 
+            and civic technology.
+          </p>
+          <p>
+            I'm particularly interested in work where <strong>spatial thinking is a strategic asset</strong>, 
+            where understanding how people move through, rely on, and are underserved by cities 
+            can shape better products, policies, and services.
+          </p>
+        </div>
+        <div class="about-tags">
+          <span class="about-tag">Spatial Analysis</span>
+          <span class="about-tag">Data Visualization</span>
+          <span class="about-tag">Urban Systems</span>
+          <span class="about-tag">R · Python</span>
+          <span class="about-tag">GIS · ArcGIS</span>
+          <span class="about-tag">Policy Strategy</span>
+          <span class="about-tag">Design </span>
+          <span class="about-tag">Food Systems</span>
+          <span class="about-tag">Mobility</span>
+          <span class="about-tag">Climate Resilience</span>
+          <span class="about-tag">Civic Tech</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-wrap">
+      <div class="contact-left">
+        <h2>Work on<br><em>hard problems</em><br>together.</h2>
+        <p>Get in touch about projects, collaborations, or conversations at the intersection of cities, data, and technology.</p>
+      </div>
+      <div class="contact-right">
+        <div class="contact-social">
+          <a href="https://linkedin.com/in/shreya21bansal" target="_blank"><h2>LinkedIn</h2></a>
+          <a href="https://sherya21.github.io/Portfolio/" target="_blank"><h2> Archive</h2></a>
+        </div>
+        <p class="contact-note">Based in San Francisco</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© Shreya Bansal 2026</p>
+    <p>Built with intent · San Francisco, CA</p>
+  </footer>
+
+</div><!-- /home -->
+
+<script>
+// cursor
+const cur=document.getElementById('cur'),cdot=document.getElementById('cdot');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function t(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  cur.style.left=rx+'px';cur.style.top=ry+'px';
+  cdot.style.left=mx+'px';cdot.style.top=my+'px';
+  requestAnimationFrame(t)})();
+document.querySelectorAll('a,button,.pcard,.arc-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+// scroll reveal project cards
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}
+  });
+},{threshold:.08});
+document.querySelectorAll('.pcard,.arc-card').forEach((c,i)=>{
+  c.style.transitionDelay=(i*.08)+'s';io.observe(c);
+});
+
+// smooth scroll for nav anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+  });
+});
+</script>
+</body>
+</html>
