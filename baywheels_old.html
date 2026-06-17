@@ -88,21 +88,6 @@
     .city-finding p{font-size:.88rem;font-weight:300;line-height:1.72;color:var(--dim)}
     .city-finding strong{font-weight:500;color:var(--text)}
     @media(max-width:760px){.three-cities{grid-template-columns:1fr}}
-    .maps-stack{display:flex;flex-direction:column;gap:1px;background:var(--rule2);margin-top:1.75rem}
-    .map-row{background:var(--bg2);display:grid;grid-template-columns:1.55fr 1fr;align-items:stretch}
-    .map-row .mr-img{display:flex;align-items:center;justify-content:center;background:var(--bg3)}
-    .map-row .mr-img img{width:100%;display:block}
-    .mr-side{padding:2.25rem;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--rule2)}
-    .mr-label{font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pink-lt);margin-bottom:.85rem}
-    .mr-side p{font-size:.95rem;font-weight:300;line-height:1.75;color:var(--dim)}
-    .mr-side strong{font-weight:500;color:var(--text)}
-    @media(max-width:760px){.map-row{grid-template-columns:1fr}.mr-side{border-left:none;border-top:1px solid var(--rule2);padding:1.5rem}}
-    .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule2);margin-top:1.5rem}
-    .insight-cell{background:var(--bg2);padding:1.5rem}
-    .insight-k{font-family:var(--display);font-weight:800;font-size:1.1rem;color:var(--pink-lt);margin-bottom:.45rem;letter-spacing:-.01em;line-height:1.2}
-    .insight-b{font-size:.88rem;font-weight:300;line-height:1.68;color:var(--dim)}
-    .insight-b strong{font-weight:500;color:var(--text)}
-    @media(max-width:760px){.insight-grid{grid-template-columns:1fr}}
     .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule2);margin-top:1.5rem}
     .rec-cell{background:var(--bg2);padding:2rem}
     .rec-city{font-family:var(--display);font-weight:800;font-size:1.1rem;color:var(--text);margin-bottom:.35rem;letter-spacing:-.01em}
@@ -146,51 +131,13 @@
     .btn-s:hover{border-color:rgba(255,255,255,.4);color:var(--text)}
     hr.div{border:none;border-top:1px solid var(--rule2)}
     @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-    /* jump nav */
-    .nav-jump{display:flex;gap:1.6rem}
-    .nav-jump a{font-family:var(--display);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px}
-    .nav-jump a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--pink-lt);transition:width .25s}
-    .nav-jump a:hover{color:var(--text)}
-    .nav-jump a:hover::after{width:100%}
-    @media(max-width:820px){.nav-jump{display:none}}
-    /* impact ribbon */
-    .impact-strip{background:var(--bg3);border-bottom:1px solid var(--rule2)}
-    .impact-inner{max-width:1200px;margin:0 auto;padding:1.1rem 3rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
-    .impact-tag{font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink-lt);white-space:nowrap;display:flex;align-items:center;gap:.55rem}
-    .impact-tag::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--pink-lt);box-shadow:0 0 0 4px var(--pink-dim)}
-    .impact-strip p{font-size:.9rem;font-weight:300;color:var(--dim);line-height:1.5;flex:1;min-width:240px}
-    .impact-strip strong{font-weight:500;color:var(--text)}
-    .impact-link{font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-lt);text-decoration:none;white-space:nowrap;transition:opacity .2s}
-    .impact-link:hover{opacity:.7}
-    @media(max-width:600px){.impact-inner{padding:1rem 1.25rem;gap:.85rem}}
-    /* act dividers */
-    .act{max-width:1200px;margin:0 auto;padding:4rem 3rem 0;scroll-margin-top:84px}
-    .act-num{font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--pink-lt);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem}
-    .act-num::before{content:'';width:26px;height:2px;background:var(--pink-lt)}
-    .act-h{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.7rem);letter-spacing:-.025em;color:var(--text);line-height:1.04}
-    .act-h em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--pink-lt)}
-    .act-sub{font-size:.96rem;font-weight:300;line-height:1.7;color:var(--dim);max-width:640px;margin-top:.85rem}
-    @media(max-width:600px){.act{padding:2.75rem 1.25rem 0}}
-    /* featured pull-stat */
-    .result-pull{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;margin-top:1.75rem;padding:1.75rem 2rem;background:var(--bg3);border-left:2px solid var(--pink-lt)}
-    .result-pull-stat{font-family:var(--display);font-weight:800;font-size:clamp(2.8rem,6vw,4rem);line-height:1;color:var(--pink-lt);letter-spacing:-.03em}
-    .result-pull-text{font-size:1rem;font-weight:300;line-height:1.65;color:var(--dim)}
-    .result-pull-text strong{font-weight:500;color:var(--text)}
-    @media(max-width:600px){.result-pull{grid-template-columns:1fr;gap:.6rem;padding:1.5rem}}
-    .chart-sm{max-width:60%;margin-left:auto;margin-right:auto}
-    @media(max-width:760px){.chart-sm{max-width:100%}}
   </style>
 </head>
 <body>
 <div id="cur"></div><div id="cdot"></div>
 <nav class="nav">
   <a href="index.html" class="nav-back">Portfolio</a>
-  <div class="nav-jump">
-    <a href="#findings">Findings</a>
-    <a href="#cities">City analysis</a>
-    <a href="#patterns">Patterns</a>
-    <a href="#recommendations">Recommendations</a>
-  </div>
+  <span class="nav-title">Bay Wheels Last-Mile Analysis</span>
   <a href="https://linkedin.com/in/shreya21bansal" target="_blank" class="nav-link">LinkedIn ↗</a>
 </nav>
 <section class="hero">
@@ -216,13 +163,6 @@
     <p class="cf-text">Bay Area cities must actively integrate Bay Wheels into their public transit ecosystems through <strong>strategic pricing, infrastructure upgrades, and event-driven initiatives</strong>, transforming last-mile gaps into seamless, equitable connections for all residents.</p>
   </div>
 </div>
-<div class="impact-strip">
-  <div class="impact-inner">
-    <span class="impact-tag">Real-world impact</span>
-    <p>Developed independently and <strong>shared with Lyft's public policy team twice</strong>, first for San Francisco, then expanded to San Jose and the East Bay.</p>
-    <a href="#recommendations" class="impact-link">Jump to recommendations →</a>
-  </div>
-</div>
 <div class="wrap">
   <p class="sec-lbl">Key messages</p>
   <h2 class="sec-h">What the data shows across all three cities</h2>
@@ -234,11 +174,6 @@
     <div class="msg-cell"><div class="msg-num">05</div><div class="msg-title">Weather is an underrated barrier</div><div class="msg-body">Wind significantly reduces last-mile trip probability. A <strong>weather-responsive rebalancing strategy</strong> at sheltered transit hubs on windy days could recover measurable ridership at low cost.</div></div>
     <div class="msg-cell"><div class="msg-num">06</div><div class="msg-title">Members and casual riders behave differently</div><div class="msg-body">Members drive last-mile use in SF and East Bay. In San Jose, <strong>casual riders show higher last-mile probability</strong>, suggesting event-based expansion could be the entry point for new members there.</div></div>
   </div>
-</div>
-<div class="act" id="findings">
-  <div class="act-num">Findings</div>
-  <h2 class="act-h">The <em>landscape</em></h2>
-  <p class="act-sub">Where Bay Wheels demand concentrates, and which stations the model flags as last-mile hubs across the three regions.</p>
 </div>
 <div class="map-section alt">
   <div class="map-inner">
@@ -257,39 +192,24 @@
     <p class="sec-lbl">Predicted last-mile probability</p>
     <h2 class="sec-h">Which stations are most likely to be <em>last-mile hubs?</em></h2>
     <p class="body-p">Logistic regression assigns each station a predicted probability of functioning as a last-mile hub. Yellow = high probability. Purple = low. Transit stations marked with × or triangles.</p>
-    <div class="result-pull">
-      <div class="result-pull-stat">78%</div>
-      <div class="result-pull-text">model accuracy predicting whether a station functions as a last-mile hub. The single strongest signal across all three cities is <strong>transit culture, not transit proximity</strong>, the share of public transit commuters in the surrounding neighbourhood.</div>
-    </div>
-    <div class="maps-stack">
-      <div class="map-row">
-        <div class="mr-img"><img src="images/baywheels/duration_and_modeling-2.png" alt="Predicted last-mile probability map, San Francisco"></div>
-        <div class="mr-side">
-          <div class="mr-label">San Francisco · May 2025</div>
-          <p><strong>FiDi and the eastern waterfront</strong> have the highest predicted probability. More variability across non-transit stations than the other cities, SF's diffuse transit network creates more opportunity outside the core.</p>
-        </div>
+    <div class="three-cities">
+      <div class="city-panel">
+        <div class="city-label">San Francisco · May 2025</div>
+        <div class="city-map"><img src="images/baywheels/duration_and_modeling-2.png"></div>
+        <div class="city-finding"><p><strong>FiDi and the eastern waterfront</strong> have the highest predicted probability. More variability across non-transit stations than the other cities, SF's diffuse transit network creates more opportunity outside the core.</p></div>
       </div>
-      <div class="map-row">
-        <div class="mr-img"><img src="images/baywheels/my_sj_prediction.png" alt="Predicted last-mile probability map, San Jose"></div>
-        <div class="mr-side">
-          <div class="mr-label">San Jose · Sep 2024</div>
-          <p><strong>Transit or nothing.</strong> Yellow stations cluster exclusively around Diridon. The rest of the network shows near-zero probability. Any expansion not anchored to transit is unlikely to generate last-mile use.</p>
-        </div>
+      <div class="city-panel">
+        <div class="city-label">San Jose · Sep 2024</div>
+        <div class="city-map"><img src="images/baywheels/my_sj_prediction.png"></div>
+        <div class="city-finding"><p><strong>Transit or nothing.</strong> Yellow stations cluster exclusively around Diridon. The rest of the network shows near-zero probability. Any expansion not anchored to transit is unlikely to generate last-mile use.</p></div>
       </div>
-      <div class="map-row">
-        <div class="mr-img"><img src="images/baywheels/oak_probability_map.png" alt="Predicted last-mile probability map, East Bay"></div>
-        <div class="mr-side">
-          <div class="mr-label">East Bay · Sep 2024</div>
-          <p><strong>More nuance.</strong> High probability near BART, but moderate probability extends into Berkeley's slow-street corridors. Cycling culture itself is a predictor here, not just transit proximity.</p>
-        </div>
+      <div class="city-panel">
+        <div class="city-label">East Bay · Sep 2024</div>
+        <div class="city-map"><img src="images/baywheels/oak_probability_map.png"></div>
+        <div class="city-finding"><p><strong>More nuance.</strong> High probability near BART, but moderate probability extends into Berkeley's slow-street corridors. Cycling culture itself is a predictor here, not just transit proximity.</p></div>
       </div>
     </div>
   </div>
-</div>
-<div class="act" id="cities">
-  <div class="act-num">City analysis</div>
-  <h2 class="act-h">City by <em>city</em></h2>
-  <p class="act-sub">Each city tells a different story, so a single Bay Area strategy won't work. Here's what drives last-mile use in San Francisco, San Jose, and the East Bay.</p>
 </div>
 <div class="map-section alt">
   <div class="map-inner">
@@ -303,9 +223,9 @@
         </div>
       </div>
       <div>
-        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim);margin-bottom:1.25rem">Dark dots mark stations within 500m of BART or Caltrain; bubble size scales with trip volume. The heaviest bubbles cluster tightly in the FiDi core and along the eastern waterfront, where near-transit stations carry the bulk of last-mile demand.</p>
-        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim);margin-bottom:1.25rem">Away from that core the picture loosens. SF's diffuse network means its non-transit stations show far more variety in use than San Jose's or the East Bay's, more opportunity outside downtown, but also less predictability.</p>
-        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim)">SF is also the only city where precipitation and wind speed were significant predictors in the regression model, suggesting weather-responsive rebalancing would have the highest ROI here.</p>
+        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim);margin-bottom:1.25rem">Thursday is SF's peak day. Weekdays show commuter peaks at 8am and 6pm; weekends skew toward afternoon leisure. Rain, wind, and cold all reduce ridership noticeably.</p>
+        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim);margin-bottom:1.25rem">Transit agencies have worked with Lyft to ensure station availability within ~0.25 miles of major stops, but coverage could be strengthened in underserved corridors outside the FiDi core.</p>
+        <p style="font-size:.95rem;font-weight:300;line-height:1.78;color:var(--dim)">SF is the only city where precipitation and wind speed were significant predictors in the regression model, suggesting weather-responsive rebalancing would have the highest ROI here.</p>
         <div class="callout">
           <div class="callout-lbl">Recommendation</div>
           <p>Bundled MUNI/BART + Bay Wheels pricing. Event valets at Outside Lands and Pride to build casual-to-member conversion at scale.</p>
@@ -321,8 +241,12 @@
     <div class="map-2col">
       <div>
         <div class="map-img-wrap">
+          <img src="images/baywheels/my_map.png">
+          <div class="map-cap">Ridership near transit, parks, and universities · 500m transit buffer · bubble size = trip count</div>
+        </div>
+        <div class="map-img-wrap" style="margin-top:.75rem">
           <img src="images/baywheels/SJ_15.png">
-          <div class="map-cap">15 most popular stations, almost all within 1km of downtown Diridon </div>
+          <div class="map-cap">15 most popular stations, almost all within 1km of downtown Diridon</div>
         </div>
       </div>
       <div>
@@ -336,17 +260,7 @@
           <div class="station-lbl">Potential new station areas</div>
           <div class="station-body"><strong>A. Alum Rock Park</strong>, recreational biking demand<br><strong>B. Tamien Caltrain</strong>, strong last-mile transit connectivity potential<br><strong>C. Capitol Caltrain</strong>, connects to Coyote Creek and Hellyer Park</div>
         </div>
-        <!-- OPTIONAL: add your "potential new station areas" map here. Drop the file at images/baywheels/sj_station_areas.png and uncomment.
-        <div class="map-img-wrap" style="margin-top:.75rem">
-          <img src="images/baywheels/sj_station_areas.png" alt="Map of potential new San Jose station areas A, B and C">
-          <div class="map-cap">Suggested station areas · A Alum Rock · B Tamien Caltrain · C Capitol Caltrain</div>
-        </div>
-        -->
       </div>
-    </div>
-    <div class="map-img-wrap chart-sm" style="margin-top:1.5rem">
-      <img src="images/baywheels/three_proposals.png">
-      <div class="map-cap">Ridership near transit, parks, and universities with three proposed additional stations · 500m transit buffer · bubble size = trip count</div>
     </div>
   </div>
 </div>
@@ -375,61 +289,6 @@
     </div>
   </div>
 </div>
-<div class="act" id="patterns">
-  <div class="act-num">Patterns</div>
-  <h2 class="act-h">Behavioral <em>patterns</em></h2>
-  <p class="act-sub">Beyond geography: when people ride, how weather shapes demand, and how the three cities stack up once you account for transit access.</p>
-</div>
-<div class="map-section">
-  <div class="map-inner">
-    <p class="sec-lbl">Temporal patterns</p>
-    <h2 class="sec-h">When do people ride in <em>San Jose?</em></h2>
-    <p class="body-p">Two views of the same San Jose data: the top splits ridership by individual day of the week, the bottom groups it into weekday versus weekend. Together they show demand that is afternoon-led and weighted toward weekends.</p>
-    <div class="map-img-wrap" style="margin-top:1.75rem">
-      <img src="images/baywheels/usage_by_dotw-1.png" alt="Hourly San Jose bike share trips by day of week and grouped by weekday vs weekend">
-      <div class="map-cap">San Jose hourly trip counts · by day of week (top) · weekday vs weekend (bottom)</div>
-    </div>
-    <div class="insight-grid">
-      <div class="insight-cell">
-        <div class="insight-k">Sunday leads</div>
-        <div class="insight-b">Looking day by day, <strong>Sunday is the busiest</strong>, with demand building through the day rather than spiking in the morning.</div>
-      </div>
-      <div class="insight-cell">
-        <div class="insight-k">Afternoon peak</div>
-        <div class="insight-b">Across the week, ridership climbs steadily and <strong>peaks in the late afternoon</strong> (~5–6pm) before tapering into the evening.</div>
-      </div>
-      <div class="insight-cell">
-        <div class="insight-k">Weekday vs weekend</div>
-        <div class="insight-b">Grouped together, <strong>weekday volume runs well above weekend</strong>, but both share the same afternoon-heavy shape rather than a sharp commuter double-peak.</div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="map-section alt">
-  <div class="map-inner">
-    <p class="sec-lbl">Weather and ridership</p>
-    <h2 class="sec-h">Does weather <em>move the needle?</em></h2>
-    <p class="body-p">San Francisco is the one city where weather actually mattered. Stacking conditions against hourly ridership shows why precipitation and wind both registered as significant predictors here.</p>
-    <div class="map-img-wrap chart-sm" style="margin-top:1.75rem">
-      <img src="images/baywheels/weather_analysis-1.png" alt="Precipitation, wind speed, temperature, and hourly bike trips for San Francisco">
-      <div class="map-cap">Precipitation · wind speed · temperature · hourly bike trips, San Francisco · May 2025</div>
-    </div>
-    <div class="insight-grid">
-      <div class="insight-cell">
-        <div class="insight-k">Rain shows up</div>
-        <div class="insight-b">Unlike bone-dry San Jose, SF saw real rain events (a sharp spike around May 12). It's the <strong>only city where precipitation was a significant negative predictor</strong>.</div>
-      </div>
-      <div class="insight-cell">
-        <div class="insight-k">A windier city</div>
-        <div class="insight-b">Wind frequently climbs past <strong>20–30 mph</strong>. Because it measurably drags down last-mile trips here, weather-responsive rebalancing at sheltered hubs has real ROI.</div>
-      </div>
-      <div class="insight-cell">
-        <div class="insight-k">A strong daily pulse</div>
-        <div class="insight-b">The hourly counts show a pronounced, repeating commute double-peak, and the volume (<strong>often 1,500+ trips/hour</strong>) dwarfs the other cities.</div>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="map-section">
   <div class="map-inner">
     <p class="sec-lbl">Comparison across three cities</p>
@@ -440,11 +299,6 @@
       <div class="map-cap">Distribution of predicted last-mile probability · near-transit vs non-transit stations · all three cities</div>
     </div>
   </div>
-</div>
-<div class="act" id="recommendations">
-  <div class="act-num">Recommendations</div>
-  <h2 class="act-h">From analysis to <em>action</em></h2>
-  <p class="act-sub">What the findings mean in practice: tailored recommendations for each city, and where the analysis points next.</p>
 </div>
 <div class="map-section alt">
   <div class="map-inner" style="padding-bottom:4rem">
@@ -517,6 +371,7 @@
   <div class="cta-strip" style="margin-top:3rem">
     <div class="cta-p">This analysis was developed independently and <strong>shared with Lyft's public policy team twice</strong>, first covering San Francisco then expanded to San Jose and the East Bay.</div>
     <div class="cta-btns">
+      <a href="https://sherya21.github.io/Portfolio/projects/11_Baywheels/" target="_blank" class="btn-p">Full interactive analysis →</a>
       <a href="index.html" class="btn-s">← Back to portfolio</a>
     </div>
   </div>
