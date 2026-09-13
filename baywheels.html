@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bay Wheels Last-Mile Analysis, Shreya Bansal</title>
-  <meta name="description" content="A logistic regression analysis of Bay Wheels bike share ridership across San Francisco, San Jose, and the East Bay, predicting which stations function as last-mile transit connectors. 78% model accuracy.">
+  <meta name="description" content="A logistic regression analysis of Bay Wheels bike share ridership across San Francisco, San Jose, and the East Bay, predicting which stations function as last-mile transit connectors and what drives last-mile use in each city.">
   <meta name="author" content="Shreya Bansal">
   <link rel="canonical" href="https://sherya21.github.io/urban-portfolio/baywheels.html">
 
@@ -223,7 +223,6 @@
       <p class="hero-sub">A logistic regression analysis of Bay Wheels ridership across San Francisco, San Jose, and the East Bay, comparing what drives last-mile use across three distinct city contexts.</p>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="hstat-v">78%</div><div class="hstat-l">Model accuracy</div></div>
       <div class="hstat"><div class="hstat-v">3</div><div class="hstat-l">Cities analyzed</div></div>
       <div class="hstat"><div class="hstat-v">2×</div><div class="hstat-l">Shown to Lyft</div></div>
     </div>
@@ -277,9 +276,8 @@
     <p class="sec-lbl">Predicted last-mile probability</p>
     <h2 class="sec-h">Which stations are most likely to be <em>last-mile hubs?</em></h2>
     <p class="body-p">Logistic regression assigns each station a predicted probability of functioning as a last-mile hub. Yellow = high probability. Purple = low. Transit stations marked with × or triangles.</p>
-    <div class="result-pull">
-      <div class="result-pull-stat">78%</div>
-      <div class="result-pull-text">model accuracy predicting whether a station functions as a last-mile hub. The single strongest signal across all three cities is <strong>transit culture, not transit proximity</strong>, the share of public transit commuters in the surrounding neighborhood.</div>
+    <div class="result-pull" style="grid-template-columns:1fr">
+      <div class="result-pull-text">A station counts as a <strong>last-mile hub</strong> when its trips are short, under 1.5 miles, and end near a BART or Caltrain stop. The model scores every station against that definition, then asks which neighborhood characteristics explain the score.</div>
     </div>
     <div class="maps-stack">
       <div class="map-row">
