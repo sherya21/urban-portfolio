@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — Shreya Bansal</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0F1014; --bg2:#181A1F; --text:#F0EDE6;
+      --dim:rgba(240,237,230,.52); --faint:rgba(240,237,230,.22);
+      --rule2:rgba(240,237,230,.13); --blue-lt:#3B6FFF;
+      --display:'Space Grotesk',sans-serif; --serif:'DM Serif Display',Georgia,serif;
+      --body:'Inter',sans-serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--body);
+      -webkit-font-smoothing:antialiased;min-height:100svh;
+      display:flex;flex-direction:column;justify-content:center;
+      padding:3rem;gap:2.5rem}
+    .lbl{font-family:var(--display);font-size:.7rem;font-weight:700;
+      letter-spacing:.2em;text-transform:uppercase;color:var(--blue-lt);
+      display:flex;align-items:center;gap:.75rem}
+    .lbl::before{content:'';display:inline-block;width:20px;height:2px;background:var(--blue-lt)}
+    h1{font-family:var(--display);font-weight:700;
+      font-size:clamp(2.2rem,6vw,4.5rem);line-height:1;letter-spacing:-.03em}
+    h1 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--blue-lt)}
+    p{font-size:1rem;font-weight:300;line-height:1.75;color:var(--dim);max-width:460px}
+    .links{display:flex;flex-wrap:wrap;gap:.6rem;
+      padding-top:2rem;border-top:1px solid var(--rule2)}
+    .links a{font-family:var(--display);font-size:.62rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+      padding:.65rem 1.3rem;border:1px solid var(--rule2);color:var(--dim);
+      transition:border-color .2s,color .2s}
+    .links a:hover{border-color:var(--text);color:var(--text)}
+    .links a.primary{background:var(--blue-lt);border-color:var(--blue-lt);color:#fff}
+    .links a.primary:hover{opacity:.85}
+    @media(max-width:600px){body{padding:2rem 1.25rem}}
+  </style>
+</head>
+<body>
+  <p class="lbl">Error 404</p>
+  <h1>This page went <em>off the map.</em></h1>
+  <p>The address you followed doesn't exist, or the page has moved. Everything else is still where it should be.</p>
+  <div class="links">
+    <a class="primary" href="/urban-portfolio/">← Back to portfolio</a>
+    <a href="/urban-portfolio/baywheels.html">Bay Wheels</a>
+    <a href="/urban-portfolio/nyc-food.html">NYC food access</a>
+    <a href="/urban-portfolio/usvi.html">USVI data roadmap</a>
+  </div>
+</body>
+</html>

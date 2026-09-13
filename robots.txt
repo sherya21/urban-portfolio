@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sherya21.github.io/urban-portfolio/sitemap.xml

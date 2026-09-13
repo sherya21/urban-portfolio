@@ -4,6 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shreya Bansal, Urban Data Strategist · Geospatial Analyst · Storyteller</title>
+  <meta name="description" content="Shreya Bansal is an urban data strategist and geospatial analyst in San Francisco, working at the intersection of spatial analysis, urban policy, and data design across mobility, food equity, and climate resilience.">
+  <meta name="author" content="Shreya Bansal">
+  <link rel="canonical" href="https://sherya21.github.io/urban-portfolio/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shreya Bansal">
+  <meta property="og:url" content="https://sherya21.github.io/urban-portfolio/">
+  <meta property="og:title" content="Shreya Bansal — Urban Data Strategist &amp; Geospatial Analyst">
+  <meta property="og:description" content="Spatial analysis and data strategy for cities. Mobility, food equity, climate resilience, and civic technology.">
+  <meta property="og:image" content="https://sherya21.github.io/urban-portfolio/images/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Shreya Bansal, urban data strategist. Spatial analysis and data strategy for cities.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shreya Bansal — Urban Data Strategist &amp; Geospatial Analyst">
+  <meta name="twitter:description" content="Spatial analysis and data strategy for cities. Mobility, food equity, climate resilience, and civic technology.">
+  <meta name="twitter:image" content="https://sherya21.github.io/urban-portfolio/images/og-home.jpg">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -67,6 +87,8 @@
       letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
       text-decoration:none;transition:color .2s}
     .sitenav-links a:hover{color:var(--text)}
+    /* keep anchored sections clear of the fixed nav */
+    #work,#about,#contact{scroll-margin-top:72px}
     @media(max-width:600px){
       .sitenav{padding:.9rem 1.25rem}
       .sitenav-links{gap:1.25rem}
@@ -82,7 +104,7 @@
       position:relative;overflow:hidden;
     }
     .hero-bg{position:absolute;inset:0;
-      background-image:url('images/bw_main.png');
+      background-image:url('images/bw_main.webp');
       background-size:cover;background-position:center;
       opacity:.1;filter:saturate(1.6)}
     .hero-bg-grad{position:absolute;inset:0;
@@ -124,6 +146,9 @@
       .hero{padding:6rem 1.25rem 4rem}
       .hero-meta{gap:1rem 2rem}
       .hero-scroll{display:none}
+      /* eyebrow wraps to 3 lines here; keep the rule beside the first line */
+      .hero-eyebrow{align-items:flex-start;font-size:.82rem}
+      .hero-eyebrow::before{margin-top:.55em}
     }
 
     /* ══════════════════════════
@@ -227,7 +252,10 @@
       .pcard,.pcard.flip{grid-template-columns:1fr;direction:ltr;min-height:auto}
       .pc-map{min-height:52vw}
       .pc-content{padding:2rem 1.25rem}
-      .pcard:hover .pc-cta{opacity:1;transform:none}
+    }
+    /* touch devices never fire :hover, so the CTA must be visible by default */
+    @media(hover:none),(max-width:760px){
+      .pc-cta{opacity:1;transform:none}
     }
 
     /* ══════════════════════════
@@ -327,9 +355,9 @@
       line-height:1.72;max-width:400px}
     .contact-right{display:flex;flex-direction:column;align-items:flex-end;gap:1rem}
     .contact-social{display:flex;gap:1.5rem}
-    .contact-social a{font-family:var(--display);font-size:1rem;font-weight:600;color: #1B4FD8;
+    .contact-social a{font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--blue);
       letter-spacing:.12em;text-transform:uppercase;
-      text-decoration:none;transition:color .5s}
+      text-decoration:none;transition:color .3s}
     .contact-social a:hover{color:var(--text)}
     .contact-note{font-size: 1rem;font-weight:300;
       font-style:italic}
@@ -517,11 +545,11 @@
 <div id="home">
 
   <nav class="sitenav">
-    <a href="#" class="sitenav-name" onclick="showHome();return false">Shreya Bansal</a>
+    <a href="#home" class="sitenav-name">Shreya Bansal</a>
     <div class="sitenav-links">
-      <a href="#work" onclick="showHome();return false">Work</a>
-      <a href="#about" onclick="showHome();return false">About</a>
-      <a href="#contact" onclick="showHome();return false">Contact</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
 
@@ -539,11 +567,11 @@
         My work spans climate resilience, mobility, food equity, and civic technology across the US and beyond.
       </p>
       <div class="hero-meta">
-        <div class="hm"><strong>MCP</strong> University of Pennsylvania </div>
-        <div class="hm"><strong>Education </strong> Planning + Architecture + Design </div>
+        <div class="hm"><strong>Master of City Planning</strong> University of Pennsylvania</div>
+        <div class="hm"><strong>Background</strong> Planning + Architecture + Design</div>
         <div class="hm"><strong>Tools</strong> R · Python · ArcGIS</div>
-        <div class="hm"><strong>Analyst at</strong> Climate Policy Initiative </div>
-        <div class="hm"><strong> Presented to </strong> Lyft Urban Solutions · Ocean Conservancy · World Resources Institute </div>
+        <div class="hm"><strong>Analyst at</strong> Climate Policy Initiative</div>
+        <div class="hm"><strong>Presented to</strong> Lyft · Ocean Conservancy · World Resources Institute</div>
       </div>
     </div>
     <div class="hero-scroll">Scroll</div>
@@ -564,7 +592,7 @@
         <!-- Bay Wheels -->
         <a class="pcard" href="baywheels.html">
           <div class="pc-map">
-            <div class="pc-img" style="background-image:url('images/bw_main.png')"></div>
+            <div class="pc-img" style="background-image:url('images/bw_main.webp')"></div>
             <div class="pc-overlay"></div>
             <div class="pc-lens" style="color:var(--lyft-c);border:1px solid var(--lyft-c)">
               Product Analysis
@@ -603,7 +631,7 @@
         <!-- NYC Food -->
         <a class="pcard flip" href="nyc-food.html">
           <div class="pc-map">
-            <div class="pc-img" style="background-image:url('images/nyc_main.png');filter:brightness(.65) saturate(1.2)"></div>
+            <div class="pc-img" style="background-image:url('images/nyc_main.webp');filter:brightness(.65) saturate(1.2)"></div>
             <div class="pc-overlay"></div>
             <div class="pc-lens" style="color:var(--food-c);border:1px solid var(--food-c)">
               Social Infrastructure
@@ -631,7 +659,7 @@
             </div>
             <div class="pc-bottom">
               <div>
-                <div class="pc-stat-v" style="color:var(--food-c);font-size:1.2rem;line-height:1.25">Research project<br> with NYC non profits </div>
+                <div class="pc-stat-v" style="color:var(--food-c);font-size:1.2rem;line-height:1.25">Research project<br>with NYC nonprofits</div>
                 <div class="pc-stat-l">Collaboration ongoing</div>
               </div>
               <div class="pc-cta" style="background:var(--food-c)">See the map →</div>
@@ -642,7 +670,7 @@
         <!-- USVI -->
         <a class="pcard" href="usvi.html">
           <div class="pc-map" style="background:#0D1A2A">
-            <div class="pc-img" style="background-image:url('images/usvi_main.png')"></div>
+            <div class="pc-img" style="background-image:url('images/usvi_main.webp')"></div>
             <div class="pc-overlay"></div>
             <div class="pc-lens" style="color:var(--usvi-c);border:1px solid var(--usvi-c)">
               Strategy & Consulting
@@ -688,7 +716,7 @@
       </div>
       <div class="archive-grid">
 
-        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/5_Migration/" target="_blank">
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/5_Migration/" target="_blank" rel="noopener">
           <div class="arc-tag">Migration · Global</div>
           <div class="arc-title">Spatial analysis of the refugee crisis</div>
           <div class="arc-desc">Mapping migrant fatalities, refugee movements, and the relationship between political instability and displacement across the Mediterranean and North America.</div>
@@ -698,7 +726,7 @@
           <span class="arc-arrow">View project →</span>
         </a>
 
-        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/6_UrbanOcean/" target="_blank">
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/6_UrbanOcean/" target="_blank" rel="noopener">
           <div class="arc-tag">Climate · 12 Cities</div>
           <div class="arc-title">Urban marine litter risk dashboard</div>
           <div class="arc-desc">Geospatial ML to predict marine litter accumulation risk across 12 Urban Ocean cities for Ocean Conservancy's zero-waste pilot site selection.</div>
@@ -708,7 +736,7 @@
           <span class="arc-arrow">View project →</span>
         </a>
 
-        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/4_OnTrack/" target="_blank">
+        <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/4_OnTrack/" target="_blank" rel="noopener">
           <div class="arc-tag">Transit · New Jersey</div>
           <div class="arc-title">Predicting NJ Transit train delays</div>
           <div class="arc-desc">Can we repair tracks before they break? Using delay prediction modeling to identify stations at highest risk of infrastructure failure.</div>
@@ -730,8 +758,8 @@
         <h2 class="about-name">Shreya<br>Bansal</h2>
         <p class="about-role">Urban Data Strategist<br>Geospatial Analyst · Storyteller</p>
         <div class="about-links">
-          <a href="https://linkedin.com/in/shreya21bansal" target="_blank" class="about-link">LinkedIn</a>
-          <a href="https://sherya21.github.io/Portfolio/" target="_blank" class="about-link">Full Portfolio</a>
+          <a href="https://linkedin.com/in/shreya21bansal" target="_blank" rel="noopener" class="about-link">LinkedIn</a>
+          <a href="https://sherya21.github.io/Portfolio/" target="_blank" rel="noopener" class="about-link">Full Portfolio</a>
         </div>
       </div>
       <div>
@@ -751,7 +779,7 @@
             At CPI, I help cities and governments understand how they're investing in climate action and how to mobilize more resources toward net-zero goals, combining rigorous data analysis with compelling visual storytelling to turn complex information into clear decisions.
           </p>
           <p>
-            I've presented my analysis to the Lyft's public policy team on bike share strategy across the Bay Area, 
+            I've presented my analysis to Lyft's public policy team on bike share strategy across the Bay Area,
             collaborated with a project manager at <strong>Ocean Conservancy</strong> to produce a tool prototype, 
             and delivered a data infrastructure strategy for the <strong>US Virgin Islands government</strong> 
             to support climate resilience planning. My work spans mobility, food equity, climate resilience, 
@@ -770,7 +798,7 @@
           <span class="about-tag">R · Python</span>
           <span class="about-tag">GIS · ArcGIS</span>
           <span class="about-tag">Policy Strategy</span>
-          <span class="about-tag">Design </span>
+          <span class="about-tag">Design</span>
           <span class="about-tag">Food Systems</span>
           <span class="about-tag">Mobility</span>
           <span class="about-tag">Climate Resilience</span>
@@ -789,8 +817,8 @@
       </div>
       <div class="contact-right">
         <div class="contact-social">
-          <a href="https://linkedin.com/in/shreya21bansal" target="_blank"><h2>LinkedIn</h2></a>
-          <a href="https://sherya21.github.io/Portfolio/" target="_blank"><h2> Archive</h2></a>
+          <a href="https://linkedin.com/in/shreya21bansal" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://sherya21.github.io/Portfolio/" target="_blank" rel="noopener">Archive</a>
         </div>
         <p class="contact-note">Based in San Francisco</p>
       </div>
@@ -798,13 +826,15 @@
   </section>
 
   <footer>
-    <p>© Shreya Bansal 2026</p>
+    <p>© Shreya Bansal <span id="yr">2026</span></p>
     <p>Built with intent · San Francisco, CA</p>
   </footer>
 
 </div><!-- /home -->
 
 <script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+
 // cursor
 const cur=document.getElementById('cur'),cdot=document.getElementById('cdot');
 let mx=0,my=0,rx=0,ry=0;
@@ -831,7 +861,9 @@ document.querySelectorAll('.pcard,.arc-card').forEach((c,i)=>{
 // smooth scroll for nav anchor links
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
-    const target=document.querySelector(a.getAttribute('href'));
+    const id=a.getAttribute('href');
+    if(id.length<2)return;
+    const target=document.getElementById(id.slice(1));
     if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
   });
 });
