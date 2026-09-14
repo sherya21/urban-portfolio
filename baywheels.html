@@ -273,6 +273,31 @@
 </div>
 <div class="map-section">
   <div class="map-inner">
+    <p class="sec-lbl">Net bike flow · San Francisco</p>
+    <h2 class="sec-h">The system <em>reverses</em> twice a day</h2>
+    <p class="body-p">Before modeling anything, the raw trip data already shows the pattern. Net flow is just starts minus ends at each station in a given hour: blue means bikes are piling up, red means they are being taken away. At 8am bikes drain out of residential neighborhoods and accumulate at the stations ringing BART, Caltrain and the Embarcadero, the first mile of a commute. By 5pm the map inverts, and those same stations empty as riders take the last mile home.</p>
+    <div class="map-img-wrap" style="margin-top:1.75rem">
+      <img src="images/baywheels/net_flow_8am_5pm.webp" alt="Two maps of San Francisco showing net bike flow at 8am and 5pm. At 8am stations near BART, Caltrain and the Embarcadero are deep blue, accumulating bikes, while residential neighborhoods are red. At 5pm the pattern reverses." loading="lazy">
+      <div class="map-cap">Net bike flow (starts − ends) at 8am and 5pm · San Francisco · May 2025 · blue = accumulating · red = draining</div>
+    </div>
+    <div class="insight-grid">
+      <div class="insight-cell">
+        <div class="insight-k">Morning: toward transit</div>
+        <div class="insight-b">At 8am the deepest blue sits <strong>inside the 500m transit buffers</strong>, around Embarcadero, Montgomery and Caltrain. Riders are leaving home and ending the trip at a train.</div>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-k">Evening: away from it</div>
+        <div class="insight-b">By 5pm those same stations turn <strong>the strongest red on the map</strong> while residential blocks fill back up. The commute runs in reverse.</div>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-k">Observed, not modeled</div>
+        <div class="insight-b">This is the raw movement of bikes, with <strong>no model and no assumed definition</strong>. It is the behavior the regression below sets out to explain.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="map-section alt">
+  <div class="map-inner">
     <p class="sec-lbl">Predicted last-mile probability</p>
     <h2 class="sec-h">Which stations are most likely to be <em>last-mile hubs?</em></h2>
     <p class="body-p">Logistic regression assigns each station a predicted probability of functioning as a last-mile hub. Yellow = high probability. Purple = low. Transit stations marked with × or triangles.</p>
@@ -506,7 +531,7 @@
   </div>
   <div style="margin-top:3rem">
     <p class="sec-lbl">Regression model</p>
-    <p class="body-p" style="max-width:100%;margin-bottom:1.5rem">Binomial logistic regression predicting whether a bike station functions as a last-mile hub (trip distance under 1.5 miles ending near transit). Run separately for each city given different data periods and local variables.</p>
+    <p class="body-p" style="max-width:100%;margin-bottom:1.5rem">Binomial logistic regression predicting whether a bike station functions as a last-mile hub (trip distance under 1.5 miles ending near transit). Run separately for each city given different data periods and local variables. Because that outcome is a constructed label, it was checked against an independent measure first: hourly net flow, starts minus ends per station, which shows the same transit-oriented pattern in the raw data without any modeling assumptions.</p>
     <div class="reg-wrap">
       <table class="reg-table">
         <tr><th>Predictor</th><th>Category</th><th>Included in</th><th>Effect on last-mile probability</th></tr>
