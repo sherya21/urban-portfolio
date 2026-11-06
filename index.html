@@ -263,7 +263,7 @@
     ══════════════════════════ */
     .archive-grid{
       display:grid;
-      grid-template-columns:repeat(2,1fr);
+      grid-template-columns:repeat(3,1fr);
       gap:1px;background:var(--rule);
       margin-bottom:2px;
     }
@@ -581,15 +581,54 @@
     <div class="wrap">
       <div class="section-hdr">
         <h2 class="sh-title">Featured Work</h2>
-        <span class="sh-count">03 projects</span>
+        <span class="sh-count">04 projects</span>
       </div>
     </div>
 
     <div class="wrap" style="padding-top:0;padding-bottom:0">
       <div class="projects">
 
+        <!-- NYC public grocery dashboard -->
+        <a class="pcard" href="grocery-siting/" target="_blank" rel="noopener">
+          <div class="pc-map">
+            <div class="pc-img" style="background-image:url('images/grocery_main.webp');filter:brightness(.95) saturate(1.05)"></div>
+            <div class="pc-overlay"></div>
+            <div class="pc-lens" style="color:#6cb88d;border:1px solid #6cb88d">
+              Interactive Dashboard
+            </div>
+            <div class="pc-maplabel">New York City · Brooklyn, Queens, Staten Island</div>
+          </div>
+          <div class="pc-content">
+            <div>
+              <p class="pc-tag" style="color:#6cb88d">
+                <span style="display:inline-block;width:14px;height:2px;background:#6cb88d"></span>
+                Food Access · Public Policy · 2026
+              </p>
+              <h3 class="pc-q">
+                Where could NYC's next <span style="color:#6cb88d">public grocery stores go?</span>
+              </h3>
+              <p class="pc-desc">
+                An interactive tool that scores every hexagon in New York City on need, walkable reach, transit and nearby retail, then ranks areas in Brooklyn, Queens and Staten Island for the City's planned public groceries. Adjust the weights and see how stable each pick is. Independent analysis, not affiliated with the City.
+              </p>
+              <div class="pc-chips">
+                <span class="chip">Python</span>
+                <span class="chip">H3 Hexagons</span>
+                <span class="chip">Walk-Network Analysis</span>
+                <span class="chip">MapLibre</span>
+              </div>
+            </div>
+            <div class="pc-bottom">
+              <div>
+                <div class="pc-stat-v" style="color:#6cb88d">8,312</div>
+                <div class="pc-stat-l">hexagons scored across NYC</div>
+              </div>
+              <div class="pc-cta" style="background:#519872">Open the dashboard →</div>
+            </div>
+          </div>
+        </a>
+
         <!-- Bay Wheels -->
-        <a class="pcard" href="baywheels.html">
+        <a class="pcard flip" href="baywheels.html">
           <div class="pc-map">
             <div class="pc-img" style="background-image:url('images/bw_main.webp')"></div>
             <div class="pc-overlay"></div>
@@ -629,7 +668,7 @@
         </a>
 
         <!-- NYC Food -->
-        <a class="pcard flip" href="nyc-food.html">
+        <a class="pcard" href="nyc-food.html">
           <div class="pc-map">
             <div class="pc-img" style="background-image:url('images/nyc_main.webp');filter:brightness(.65) saturate(1.2)"></div>
             <div class="pc-overlay"></div>
@@ -668,7 +707,7 @@
         </a>
 
         <!-- USVI -->
-        <a class="pcard" href="usvi.html">
+        <a class="pcard flip" href="usvi.html">
           <div class="pc-map" style="background:#0D1A2A">
             <div class="pc-img" style="background-image:url('images/usvi_main.webp')"></div>
             <div class="pc-overlay"></div>
@@ -715,16 +754,6 @@
         <h2 class="sh-title">More Work</h2>
       </div>
       <div class="archive-grid">
-
-        <a class="arc-card" href="grocery-siting/" target="_blank" rel="noopener">
-          <div class="arc-tag">Food Access · New York City</div>
-          <div class="arc-title">Where could NYC's next public grocery stores go?</div>
-          <div class="arc-desc">An interactive dashboard that scores every hexagon in New York City and ranks areas in Brooklyn, Queens and Staten Island for the City's planned public groceries. Adjustable weights and a stability check. Independent analysis, not affiliated with the City.</div>
-          <div class="arc-chips">
-            <span class="chip">Python</span><span class="chip">H3 Hexagons</span><span class="chip">Dashboard</span>
-          </div>
-          <span class="arc-arrow">Open the dashboard →</span>
-        </a>
 
         <a class="arc-card" href="https://sherya21.github.io/Portfolio/projects/5_Migration/" target="_blank" rel="noopener">
           <div class="arc-tag">Migration · Global</div>
