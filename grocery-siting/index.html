@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where could the next public grocery go?</title>
+<meta name="description" content="Independent dashboard ranking areas of Brooklyn, Queens and Staten Island for NYC's remaining public grocery stores.">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="brand/brand.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
+<style>
+/* colors and font come from brand/brand.css; these are this page's local aliases */
+:root{--card:var(--panel);--mute:var(--muted);--cobalt:var(--accent);--sans:var(--font)}
+/* this page's data colours: white (lowest) to green #519872 (highest); overrides the brand ramp for this page only */
+:root{--rate-1:#ffffff;--rate-2:#c5dcd0;--rate-3:#8bbaa1;--rate-4:#519872;--highlight:#6cb88d}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:14px/1.45 var(--sans);background:var(--bg);color:var(--ink);display:grid;grid-template-columns:1fr 450px;overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+#mapwrap{position:relative;min-height:0}
+#map{position:absolute;inset:0}
+aside{display:flex;flex-direction:column;min-height:0;border-left:1px solid var(--line);background:var(--bg)}
+.scroll{overflow:auto;flex:1;min-height:0;padding:0 18px 12px}
+header{padding:16px 18px 0}
+h1{font:700 21px/1.15 var(--sans);margin:0;letter-spacing:-.01em}
+.sub{color:var(--mute);margin:6px 0 0;font-size:12.5px}
+.sub b{color:var(--ink)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;margin:12px 0 0;border-bottom:1px solid var(--line)}
+.tab{border:0;background:none;padding:8px 12px;font-weight:500;color:var(--mute);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--cobalt);border-color:var(--cobalt)}
+h2{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin:18px 0 9px}
+.w{display:grid;grid-template-columns:132px 1fr 38px;align-items:center;gap:8px;margin:4px 0;font-size:13px}
+.w small{display:block;color:var(--mute);font-size:10.5px;line-height:1.1}
+.w output{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--cobalt)}
+.btn{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 10px;font-size:12.5px}
+.btn:hover{border-color:var(--cobalt);color:var(--cobalt)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:none;padding:6px 12px;font-weight:500}
+.seg button.on{background:var(--cobalt);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pick{background:var(--card);border-radius:10px;padding:9px 10px;cursor:pointer;border:1px solid transparent}
+.pick:hover{border-color:var(--cobalt)}
+.pick .bo{font:700 10.5px var(--sans);color:var(--mute);letter-spacing:.08em}
+.pick .ad{font-weight:700;font-size:12.5px;line-height:1.2;margin:3px 0}
+.pick .sc{font:700 20px var(--sans);color:var(--highlight)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;border-radius:99px;padding:1px 7px;margin-top:3px;background:rgba(81,152,114,.25);color:#a6dcc0}
+.badge.mid{background:rgba(255,255,255,.08);color:#c9d1d5}.badge.low{background:rgba(255,255,255,.05);color:#8a9398}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:var(--mute);text-align:left;padding:4px 4px 6px;border-bottom:1px solid var(--line)}
+td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.lot{cursor:pointer}tr.lot:hover{background:var(--card)}
+td.n{color:var(--mute);width:18px}
+td .ad{font-weight:700;font-size:12.5px}
+td .m{color:var(--mute);font-size:11px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line);margin-top:4px}
+.bar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10.5px;color:var(--mute);margin:8px 0}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.ck{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:13px;cursor:pointer}.ck small{display:block;color:var(--mute);font-size:11px;line-height:1.3}
+.note{font-size:11.5px;color:var(--mute);line-height:1.5}
+footer{border-top:1px solid var(--line);padding:9px 18px;font-size:10.5px;color:var(--mute);line-height:1.45}
+.panel{background:rgba(17,20,23,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:10px;padding:9px 12px;position:absolute;z-index:5;font-size:12px}
+#layers{top:12px;left:12px}
+#layers label{display:flex;gap:7px;align-items:center;margin:3px 0;cursor:pointer}
+#layers i{display:inline-block;flex:none}
+.ic{width:16px;height:16px;flex:none}
+#legend{left:12px;bottom:26px;width:200px;color:var(--mute);font-size:11px}
+#legend .g{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--rate-1),var(--rate-2),var(--rate-3),var(--rate-4));margin:5px 0 3px}
+#legend .lr{display:flex;justify-content:space-between}
+.pin{display:flex;align-items:center;gap:6px;transform:translate(-13px,-13px);cursor:default}
+.pin svg{width:26px;height:26px;flex:none;filter:drop-shadow(0 0 2px rgba(0,0,0,.9))}
+.pin span{font:700 11px var(--sans);color:#ffffff;background:rgba(17,20,23,.88);border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.maplibregl-popup-content{font:12.5px/1.4 var(--sans);padding:12px 14px;border-radius:10px;min-width:230px;max-width:290px;background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip{border-bottom-color:var(--panel)}.maplibregl-popup-anchor-bottom .maplibregl-popup-tip{border-top-color:var(--panel)}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip{border-right-color:var(--panel)}.maplibregl-popup-anchor-right .maplibregl-popup-tip{border-left-color:var(--panel)}
+.maplibregl-popup-close-button{color:var(--muted)}
+.maplibregl-ctrl-group{background:var(--panel)!important;border:1px solid var(--line)}.maplibregl-ctrl-group button+button{border-top-color:var(--line)}
+.maplibregl-ctrl-group .maplibregl-ctrl-icon{filter:invert(1) brightness(.9)}
+
+.maplibregl-ctrl-attrib{background:rgba(17,20,23,.75)!important;color:var(--faint)!important}.maplibregl-ctrl-attrib a{color:var(--muted)!important}
+.maplibregl-popup-content h3{margin:0 0 2px;font:700 14px var(--sans)}
+.maplibregl-popup-content .m{color:var(--mute);font-size:11.5px;margin-bottom:6px}
+.pf{display:grid;grid-template-columns:1fr 38px;gap:2px 8px;margin:5px 0;font-size:12px}
+.pf .b{grid-column:1/3;height:4px;background:var(--line);border-radius:2px;margin:-1px 0 3px}.pf .b i{display:block;height:100%;background:#519872;border-radius:2px}
+.pf span:nth-child(2n){text-align:right;font-variant-numeric:tabular-nums}
+.kv{display:flex;justify-content:space-between;gap:10px;margin-top:3px;color:var(--mute)}.kv b{color:var(--ink);font-weight:500;text-align:right}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+#modal.on{display:flex}
+#modal .box{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:760px;max-height:88vh;overflow:auto;padding:22px 26px;position:relative}
+#modal h3{font:700 18px var(--sans);margin:0 0 4px}
+#modal h4{font:700 12px var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:18px 0 6px}
+#modal .x{position:absolute;top:12px;right:14px;border:0;background:none;font-size:22px;color:var(--mute)}
+#modal td{font-size:12px}#modal ul{margin:4px 0;padding-left:18px;font-size:12.5px}#modal li{margin:3px 0}
+.tag{font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.tag.plan{background:rgba(81,152,114,.25);color:#a6dcc0}.tag.added{background:rgba(255,255,255,.12);color:#ffffff}.tag.judg{background:var(--line);color:var(--muted)}
+.zlab{font:700 12px var(--sans);color:var(--ink);background:var(--bg);border:1.5px solid var(--ink);border-radius:5px;padding:0 5px;cursor:pointer;margin-bottom:2px}
+@media (max-width:900px){
+  body{grid-template-columns:1fr;grid-template-rows:55vh 1fr;overflow:auto}
+  aside{border-left:0;border-top:1px solid var(--line)}
+  #layers{font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="mapwrap">
+  <div id="map"></div>
+  <div class="panel" id="layers">
+    <b style="font-size:11px;letter-spacing:.08em;color:var(--mute)">LAYERS</b>
+    <label><input type="checkbox" data-l="hex" checked> <i style="width:16px;height:10px;border-radius:2px;background:linear-gradient(90deg,#ffffff,#519872)"></i> Hexagon score</label>
+    <label><input type="checkbox" data-l="areas" checked> <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.2 14.2,4.6 14.2,11.4 8,14.8 1.8,11.4 1.8,4.6" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linejoin="round"/><polygon points="8,1.2 14.2,4.6 14.2,11.4 8,14.8 1.8,11.4 1.8,4.6" fill="none" stroke="#111417" stroke-width="1.5" stroke-linejoin="round"/></svg> Top areas (outlined)</label>
+    <label><input type="checkbox" data-l="supers" checked> <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.6" y="2.6" width="10.8" height="10.8" fill="#f0833a" stroke="#111417" stroke-width="1.6"/></svg> Full-service supermarkets</label>
+    <label><input type="checkbox" data-l="stations"> <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.8" fill="#3b6fff" stroke="#ffffff" stroke-width="1.8"/></svg> Subway / SIR stations</label>
+    <label><input type="checkbox" data-l="refs" checked> <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,0.8 10.3,5.6 15.5,6.2 11.6,9.7 12.7,15 8,12.3 3.3,15 4.4,9.7 0.5,6.2 5.7,5.6" fill="#fcee5a" stroke="#111417" stroke-width="1.3" stroke-linejoin="round"/></svg> Existing chosen sites</label>
+  </div>
+  <div class="panel" id="legend"><b id="legt" style="color:var(--ink)">Suitability score</b><div class="g"></div><div class="lr"><span>lower</span><span style="color:var(--highlight);font-weight:700">higher</span></div></div>
+</div>
+
+<aside>
+  <header>
+    <h1>Where could the next public grocery go?</h1>
+    <p class="sub">Scores every hexagon in NYC and ranks <b>areas</b> in <b>Brooklyn, Queens and Staten Island</b> on the criteria in the City's N.Y.C. Groceries Vision Plan. It points to neighbourhoods, not specific sites. <b>Independent analysis, not affiliated with the City. Not a prediction of the City's choices.</b></p>
+    <div class="row" style="margin-top:8px"><button class="btn" id="open-methods">Methods and limits</button><span class="note" id="headline"></span></div>
+    <div class="tabs"><button class="tab on" data-t="rank">Rankings</button><button class="tab" data-t="sanity">Existing chosen sites</button></div>
+  </header>
+
+  <div class="scroll" id="t-rank">
+    <h2>Weights <button class="btn" id="reset" style="float:right;margin-top:-6px">Reset</button></h2>
+    <div id="sliders"></div>
+
+    <h2>Top pick per borough</h2>
+    <div class="cards" id="picks"></div>
+
+    <h2>Top 10 areas</h2>
+    <div class="row" style="justify-content:space-between"><div class="seg" id="boro"></div><button class="btn" id="csv">Download CSV</button></div>
+    <div class="legend" id="lg"></div>
+    <table><thead><tr><th></th><th>Area</th><th>Score</th></tr></thead><tbody id="rows"></tbody></table>
+    <p class="note" style="margin-top:10px">Stability = share of 500 random weightings (each weight varied by up to &plusmn;50%) in which the area overlaps one of its borough's top 3. Click a row to fly to it.</p>
+  </div>
+
+  <div class="scroll" id="t-sanity" style="display:none">
+    <h2>How do the existing chosen sites score?</h2>
+    <p class="note">The Bronx and Manhattan sites scored with the same model, as a percentile of all NYC areas and hexagons (live with your weights).</p>
+    <div id="sanity"></div>
+    <p class="note" id="sanity-note"></p>
+  </div>
+
+  <footer id="foot"></footer>
+</aside>
+
+<div id="modal"><div class="box"><button class="x" id="close-methods" aria-label="Close">&times;</button><div id="methods"></div></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"></script>
+<script src="brand/brand.js"></script>
+<script src="data/bundle.js"></script>
+<script>
+const CHALLENGE = "Day 20 (Hexagons)";
+const NAMES = {need:"Need", low_saturation:"Low saturation", walk_reach:"Walk reach", transit:"Transit", corridor_anchor:"Corridor anchor"};
+const SUBS = {need:"supermarket distance, SNAP, poverty", low_saturation:"few supermarkets per resident", walk_reach:"residents within 10 min", transit:"station time + bus stops · added by analyst", corridor_anchor:"retail within 400 m"};
+const NF = 5;
+const RATE = ["#ffffff","#519872"];   // white = lowest, green = highest, straight blend between
+const rgb = c => [1,3,5].map(i=>parseInt(c.slice(i,i+2),16));
+function rateAt(t){ t=Math.min(1,Math.max(0,t)); const a=rgb(RATE[0]), b=rgb(RATE[1]); return "#"+a.map((v,k)=>Math.round(v+(b[k]-v)*t).toString(16).padStart(2,"0")).join(""); }
+const SEG = [0,1,2,3,4].map(j=>rateAt(.3+.7*j/4));   // factor colours: slices of the same white-to-green ramp
+const BORO = {BK:"Brooklyn", QN:"Queens", SI:"Staten Island"};
+const BORO_ALL = {BK:"Brooklyn", QN:"Queens", SI:"Staten Island", MN:"Manhattan", BX:"Bronx"};
+const $ = s => document.querySelector(s);
+const fmt = n => n==null ? "n/a" : Math.round(n).toLocaleString();
+const pct = n => n==null ? "n/a" : Math.round(n*100)+"%";
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let META, HEX, NB, SUPERS, STATIONS, REFS, FACT, W0, W, sel = "BK", map;
+let HF, HS, ZA, N, hexIdx = new Map(), BL = [], HAS4 = [], IDXB = {BK:[],QN:[],SI:[]}, TOPA = {BK:[],QN:[],SI:[]}, areaMarkers = [], stabToken = 0;
+
+async function boot(){
+  const FILES = {meta:"meta.json", hexes:"hexes.geojson", nbrs:"neighbors.json", supermarkets:"supermarkets.geojson", stations:"stations.geojson", refs:"refs.geojson"}, names = Object.keys(FILES);
+  if(window.GS){ [META, HEX, NB, SUPERS, STATIONS, REFS] = names.map(n=>GS[n]); }          // data/bundle.js: works when the page is double-clicked
+  else {
+    if(location.protocol==="file:") throw new Error("data/bundle.js not found. Run 02_model.ipynb to create it, or serve this folder with: python -m http.server");
+    const g = f => fetch("data/"+f).then(r=>{ if(!r.ok) throw new Error(f+" "+r.status); return r.json(); });
+    [META, HEX, NB, SUPERS, STATIONS, REFS] = await Promise.all(names.map(n=>g(FILES[n])));
+  }
+  FACT = META.factors; W0 = FACT.map(k=>META.weights[k]); W = W0.slice();
+  const K = FACT.map(k=>META.keys[k]); N = HEX.features.length; HF = new Float32Array(N*NF);
+  HEX.features.forEach((f,i)=>{ hexIdx.set(f.properties.id,i); BL[i]=f.properties.b; K.forEach((k,j)=>HF[i*NF+j]=f.properties[k]); HAS4[i]=NB.nb1[i].length>=4; });
+  for(let i=0;i<N;i++) if(BL[i] in IDXB && HEX.features[i].properties.rp>=META.minReachPop && HAS4[i]) IDXB[BL[i]].push(i);   // area centres that can be ranked
+  buildUI(); initMap();
+}
+
+/* ---------- model: hexagon scores, then areas (a hexagon plus its same-borough neighbours) ---------- */
+const norm = w => { const t=w.reduce((a,b)=>a+b,0)||1; return w.map(v=>v/t); };
+function hexScores(w,out){ for(let i=0;i<N;i++){ let s=0; for(let j=0;j<NF;j++) s+=w[j]*HF[i*NF+j]; out[i]=s; } return out; }
+function areaMeans(hs,out){ for(let i=0;i<N;i++){ const m=NB.nb1[i]; let s=0; for(let k=0;k<m.length;k++) s+=hs[m[k]]; out[i]=m.length?s/m.length:0; } return out; }
+function pickTop(za,idx,n){            // best area first; later picks may not overlap earlier ones (centres at least 3 hexagons apart)
+  const picks=[], blk=new Set();
+  for(let k=0;k<n;k++){
+    let best=-1,bv=-1;
+    for(let q=0;q<idx.length;q++){ const i=idx[q]; if(za[i]>bv && !blk.has(i)){ bv=za[i]; best=i; } }
+    if(best<0) break;
+    picks.push(best); blk.add(best); const nb=NB.nb2[best]; for(let q=0;q<nb.length;q++) blk.add(nb[q]);
+  }
+  return picks;
+}
+function recompute(){
+  const w = norm(W);
+  HS = hexScores(w,new Float32Array(N)); ZA = areaMeans(HS,new Float32Array(N));
+  for(const b of Object.keys(BORO)) TOPA[b] = pickTop(ZA,IDXB[b],META.topAreas).map(c=>({c, score:ZA[c], stab:null}));
+  paintHexes(); drawAreas(); renderPicks(); renderRows(); renderSanity();
+  document.body.dataset.stab="";
+  const tok=++stabToken; setTimeout(()=>computeStability(w,tok),30);
+}
+function computeStability(w,tok){      // share of 500 random weightings in which an area overlaps its borough's top 3
+  const S=META.scenarios, hs=new Float32Array(N), za=new Float32Array(N), ws=new Float64Array(NF), hits={};
+  for(const b in BORO) hits[b]=new Float64Array(TOPA[b].length);
+  let s=0;
+  const step=()=>{
+    if(tok!==stabToken) return;        // weights changed meanwhile
+    const end=Math.min(s+50,S.length);
+    for(;s<end;s++){
+      for(let j=0;j<NF;j++) ws[j]=w[j]*S[s][j];
+      hexScores(ws,hs);
+      for(const b in BORO){
+        const idx=IDXB[b];
+        for(let q=0;q<idx.length;q++){ const i=idx[q], m=NB.nb1[i]; let a=0; for(let k=0;k<m.length;k++) a+=hs[m[k]]; za[i]=a/m.length; }
+        const picks=pickTop(za,idx,3);
+        TOPA[b].forEach((t,k)=>{ const n2=NB.nb2[t.c]; if(picks.some(p=>p===t.c||n2.includes(p))) hits[b][k]++; });
+      }
+    }
+    if(s<S.length){ setTimeout(step,0); return; }
+    for(const b in BORO) TOPA[b].forEach((t,k)=>t.stab=hits[b][k]/S.length);
+    renderPicks(); renderRows(); document.body.dataset.stab="1";
+  };
+  step();
+}
+
+/* ---------- area helpers ---------- */
+const hexName = i => HEX.features[i].properties.nta || "Area near "+HEX.features[i].properties.sm;
+function areaFactors(c){ const m=NB.nb1[c], f=new Array(NF).fill(0); for(const j of m) for(let q=0;q<NF;q++) f[q]+=HF[j*NF+q]; return f.map(v=>v/m.length); }
+function areaPeople(c){ return NB.nb1[c].reduce((a,j)=>a+HEX.features[j].properties.pop,0); }
+function centre(i){ const hb=NB.hb[i]; return [hb.reduce((a,p)=>a+p[0],0)/hb.length, hb.reduce((a,p)=>a+p[1],0)/hb.length]; }
+function outline(members){             // outer edge of a group of hexagons: edges that belong to exactly one member
+  const cnt=new Map(), segs=[];
+  for(const j of members){ const hb=NB.hb[j]; for(let k=0;k<hb.length;k++){ const a=hb[k], b=hb[(k+1)%hb.length];
+    const key=[a.map(v=>v.toFixed(5)).join(),b.map(v=>v.toFixed(5)).join()].sort().join("|"); cnt.set(key,(cnt.get(key)||0)+1); segs.push([key,a,b]); } }
+  return segs.filter(s=>cnt.get(s[0])===1).map(s=>[s[1],s[2]]);
+}
+
+/* ---------- UI ---------- */
+function buildUI(){
+  $("#sliders").innerHTML = FACT.map((k,j)=>`<div class="w"><span>${NAMES[k]}<small>${SUBS[k]}</small></span><input type="range" min="0" max="1" step="0.05" id="w${j}" value="${W[j]}"><output id="o${j}"></output></div>`).join("");
+  FACT.forEach((_,j)=>$("#w"+j).oninput=e=>{ W[j]=+e.target.value; syncW(); schedule(); });
+  $("#reset").onclick=()=>{ W=W0.slice(); FACT.forEach((_,j)=>$("#w"+j).value=W[j]); syncW(); schedule(); };
+  $("#boro").innerHTML = Object.entries(BORO).map(([k,v])=>`<button data-b="${k}" class="${k===sel?"on":""}">${v}</button>`).join("");
+  $("#boro").onclick=e=>{ const b=e.target.dataset.b; if(!b) return; sel=b; document.querySelectorAll("#boro button").forEach(x=>x.classList.toggle("on",x.dataset.b===b)); renderRows(); };
+  $("#lg").innerHTML = FACT.map((k,j)=>`<span><i style="background:${SEG[j]}"></i>${NAMES[k]}</span>`).join("");
+  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{ document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t)); $("#t-rank").style.display=t.dataset.t==="rank"?"":"none"; $("#t-sanity").style.display=t.dataset.t==="sanity"?"":"none"; });
+  $("#csv").onclick=downloadCSV;
+  $("#open-methods").onclick=()=>$("#modal").classList.add("on"); $("#close-methods").onclick=()=>$("#modal").classList.remove("on");
+  $("#modal").onclick=e=>{ if(e.target.id==="modal") $("#modal").classList.remove("on"); };
+  $("#headline").textContent = `${(META.farPop/1e6).toFixed(2)}M residents (${Math.round(META.farPop/META.studyPop*100)}%) live over a 10-min walk from a full-service supermarket.`;
+  $("#foot").innerHTML = `Independent analysis by Shreya Bansal for #30DayMapChallenge ${CHALLENGE}. Built with AI-assisted coding; criteria, weights and interpretation are my own. Data: NYS Retail Food Stores, ACS, MapPLUTO, MTA, OSM. Not affiliated with NYC EDC or the Mayor's Office.`;
+  $("#methods").innerHTML = methodsHTML();
+  syncW();
+}
+function syncW(){ const w=norm(W); FACT.forEach((_,j)=>$("#o"+j).textContent=Math.round(w[j]*100)+"%"); }
+let timer; function schedule(){ clearTimeout(timer); timer=setTimeout(recompute,60); }
+
+function badge(s){ if(s==null) return `<span class="badge">checking stability…</span>`; const c=s>=.7?"":s>=.4?"mid":"low"; return `<span class="badge ${c}">${Math.round(s*100)}% stable</span>`; }
+function bar(c,w,score){
+  const f=areaFactors(c), segs=f.map((v,j)=>w[j]*v), tot=segs.reduce((a,b)=>a+b,0)||1;
+  return `<div class="bar" style="width:${Math.round(Math.min(1,score)*100)}%">${segs.map((v,j)=>`<i style="width:${v/tot*100}%;background:${SEG[j]}" title="${NAMES[FACT[j]]}: ${v.toFixed(3)}"></i>`).join("")}</div>`;
+}
+function renderPicks(){
+  $("#picks").innerHTML = Object.keys(BORO).map(b=>{ const t=TOPA[b][0]; if(!t) return "";
+    return `<div class="pick" data-b="${b}" data-k="0"><div class="bo">${BORO[b].toUpperCase()}</div><div class="ad">${esc(hexName(t.c))}</div><div class="sc">${t.score.toFixed(2)}</div>${badge(t.stab)}<div class="note" style="margin-top:3px">${fmt(areaPeople(t.c))} residents in the area</div></div>`; }).join("");
+  document.querySelectorAll(".pick[data-b]").forEach(el=>el.onclick=()=>flyArea(el.dataset.b,+el.dataset.k));
+}
+function renderRows(){
+  const w=norm(W);
+  $("#rows").innerHTML = (TOPA[sel]||[]).map((t,k)=>{ const h=HEX.features[t.c].properties;
+    return `<tr class="lot" data-b="${sel}" data-k="${k}"><td class="n">${k+1}</td><td><div class="ad">${esc(hexName(t.c))}</div><div class="m">${fmt(areaPeople(t.c))} residents · ${h.smm==null?"no":h.smm+" min walk to a"} supermarket</div>${bar(t.c,w,t.score)}</td><td><b style="color:var(--highlight);font-size:15px">${t.score.toFixed(2)}</b><br>${badge(t.stab)}</td></tr>`; }).join("");
+  document.querySelectorAll("tr.lot").forEach(el=>el.onclick=()=>flyArea(el.dataset.b,+el.dataset.k));
+}
+function downloadCSV(){
+  const w=norm(W), rows=[["borough","rank","area","neighbourhood","centre_lat","centre_lon","score","stability_top3",...FACT,"residents_in_area","walk_to_supermarket_min_centre","nearest_supermarket_centre"]];
+  for(const b of Object.keys(BORO)) TOPA[b].forEach((t,k)=>{ const h=HEX.features[t.c].properties, [lon,lat]=centre(t.c), f=areaFactors(t.c);
+    rows.push([BORO[b],k+1,b+(k+1),h.nta,lat.toFixed(5),lon.toFixed(5),t.score.toFixed(4),t.stab==null?"":t.stab.toFixed(3),...f.map(v=>v.toFixed(3)),Math.round(areaPeople(t.c)),h.smm,h.sm]); });
+  rows.push([]); rows.push(["weights",...FACT.map((k,j)=>k+"="+w[j].toFixed(3))]);
+  const csv=rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="top_areas.csv"; a.click();
+}
+
+/* ---------- sanity check ---------- */
+function percentile(arr,v,mask){ let c=0,n=0; for(let i=0;i<arr.length;i++){ if(mask&&!mask[i]) continue; n++; if(arr[i]<v) c++; } return c/n*100; }
+function renderSanity(){
+  const w=norm(W); let low=[];
+  $("#sanity").innerHTML = REFS.features.map(f=>{ const p=f.properties, F=p.f, h=hexIdx.get(p.h);
+    const hs=F.reduce((a,v,j)=>a+v*w[j],0), as=ZA[h], ph=percentile(HS,hs), pa=percentile(ZA,as,HAS4);
+    if(pa<75) low.push(`${p.n} (${Math.round(pa)}th percentile as an area)`);
+    return `<div class="pick" style="cursor:default;margin-bottom:10px"><div class="bo">${esc(p.boro.toUpperCase())} · ${esc((p.nta||"").toUpperCase())} · ${fmt(p.store_sf)} SQ FT STORE</div><div class="ad" style="font-size:15px">${esc(p.n)}</div>
+      <div class="row" style="gap:18px;margin:6px 0"><div><div class="sc">${Math.round(pa)}<small style="font-size:12px">th</small></div><div class="note">pct, as an area</div></div><div><div class="sc" style="color:var(--ink)">${Math.round(ph)}<small style="font-size:12px">th</small></div><div class="note">pct, single hexagon</div></div></div>
+      <div class="pf">${FACT.map((k,j)=>`<span>${NAMES[k]}</span><span>${F[j].toFixed(2)}</span><div class="b"><i style="width:${F[j]*100}%"></i></div>`).join("")}</div>
+      <div class="kv"><span>Nearest supermarket</span><b>${esc(p.sm)} · ${p.smm} min</b></div><div class="kv"><span>Residents within 10 min</span><b>${fmt(p.rp)}</b></div><div class="note" style="margin-top:6px">${esc(p.note)}. Geocoded as ${esc(p.addr)}.</div></div>`; }).join("");
+  $("#sanity-note").innerHTML = (low.length ? `<b>Outside the top quarter of NYC areas: ${low.join(" and ")}.</b> ` : "<b>Both sites are in the top quarter of NYC areas on this model.</b> ") +
+    `The City weighed things this model does not: public land and low-cost real estate, an existing housing campus or market, construction readiness and timing, operator and store format, community input, and not displacing existing retailers.`;
+}
+
+/* ---------- map ---------- */
+function paintHexes(){
+  if(!map || !map.getSource("hexes")) return;
+  const sorted=Array.from(HS).sort((a,b)=>a-b), lo=sorted[Math.floor(sorted.length*.05)], hi=sorted[Math.floor(sorted.length*.995)];
+  
+  map.setPaintProperty("hex","fill-color",["interpolate",["linear"],["coalesce",["feature-state","s"],0],lo,RATE[0],hi,RATE[1]]);
+  HEX.features.forEach((f,i)=>map.setFeatureState({source:"hexes",id:f.properties.id},{s:HS[i]}));
+}
+function drawAreas(){
+  if(!map || !map.getSource("areas")) return;
+  areaMarkers.forEach(m=>m.remove()); areaMarkers=[];
+  const feats=[], show=$("#layers input[data-l=areas]").checked;
+  for(const b of Object.keys(BORO)) TOPA[b].forEach((t,k)=>{
+    feats.push({type:"Feature",properties:{b,k},geometry:{type:"MultiLineString",coordinates:outline(NB.nb1[t.c])}});
+    if(k<3){ const el=document.createElement("div"); el.className="zlab"; el.textContent=b+(k+1); el.style.display=show?"":"none"; el.onclick=()=>flyArea(b,k);
+      areaMarkers.push(new maplibregl.Marker({element:el,anchor:"bottom"}).setLngLat(centre(t.c)).addTo(map)); }
+  });
+  map.getSource("areas").setData({type:"FeatureCollection",features:feats});
+}
+function img(draw,size=24){ const c=document.createElement("canvas"); c.width=c.height=size; const x=c.getContext("2d"); draw(x,size); return x.getImageData(0,0,size,size); }
+function initMap(){
+  map = new maplibregl.Map({container:"map",style:BRAND.glStyle("dark"),center:[-73.95,40.66],zoom:9.4,attributionControl:{compact:true}});
+  map.addControl(new maplibregl.NavigationControl({showCompass:false}),"bottom-right");
+  map.on("load",()=>{
+    map.addImage("gs-square",img((x,s)=>{ x.fillStyle="#f0833a"; x.strokeStyle="#111417"; x.lineWidth=3; x.fillRect(s*.16,s*.16,s*.68,s*.68); x.strokeRect(s*.16,s*.16,s*.68,s*.68); },24),{pixelRatio:2});
+    map.addSource("hexes",{type:"geojson",data:HEX,promoteId:"id"});
+    map.addLayer({id:"hex",type:"fill",source:"hexes",paint:{"fill-color":"#3a4045","fill-opacity":.9}});
+    map.addLayer({id:"hex-line",type:"line",source:"hexes",paint:{"line-color":"#111417","line-width":.3,"line-opacity":.5}});
+    map.addSource("areas",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
+    map.addLayer({id:"areas-case",type:"line",source:"areas",layout:{"line-join":"round"},paint:{"line-color":"#ffffff","line-width":["case",["<",["get","k"],3],6.5,4],"line-opacity":.95}});
+    map.addLayer({id:"areas-line",type:"line",source:"areas",layout:{"line-join":"round"},paint:{"line-color":"#14171a","line-width":["case",["<",["get","k"],3],3,1.8]}});
+    map.addSource("stations",{type:"geojson",data:STATIONS});
+    map.addLayer({id:"stations",type:"circle",source:"stations",layout:{visibility:"none"},paint:{"circle-radius":["interpolate",["linear"],["zoom"],9,3.4,13,5.5,16,8],"circle-color":"#3b6fff","circle-stroke-color":"#ffffff","circle-stroke-width":1.6}});
+    map.addSource("supers",{type:"geojson",data:SUPERS});
+    map.addLayer({id:"supers",type:"symbol",source:"supers",layout:{"icon-image":"gs-square","icon-allow-overlap":true,"icon-size":["interpolate",["linear"],["zoom"],8,.4,10,.6,13,1.2,16,1.7]}});
+    REFS.features.forEach(f=>{ const el=document.createElement("div"); el.className="pin"; el.innerHTML=`<svg viewBox="0 0 24 24"><polygon points="12,1.2 15.2,8.3 22.9,9.1 17.1,14.3 18.8,22 12,18.1 5.2,22 6.9,14.3 1.1,9.1 8.8,8.3" fill="#fcee5a" stroke="#111417" stroke-width="1.8" stroke-linejoin="round"/></svg><span>${esc(f.properties.n)}</span>`; el.dataset.ref="1";
+      new maplibregl.Marker({element:el,anchor:"left"}).setLngLat(f.geometry.coordinates).addTo(map); });
+    map.resize(); map.fitBounds([[-74.27,40.48],[-73.68,40.84]],{padding:{top:20,bottom:20,left:30,right:30},duration:0});
+    recompute();
+    for(const id of ["supers","stations","hex"]) map.on("mouseenter",id,()=>map.getCanvas().style.cursor="pointer"), map.on("mouseleave",id,()=>map.getCanvas().style.cursor="");
+    map.on("click",onClick);
+    map.once("idle",()=>document.body.dataset.ready="1");
+  });
+  document.querySelectorAll("#layers input").forEach(c=>c.onchange=()=>{
+    const v=c.checked?"visible":"none", l=c.dataset.l;
+    if(l==="hex"){ map.setLayoutProperty("hex","visibility",v); map.setLayoutProperty("hex-line","visibility",v); }
+    else if(l==="refs") document.querySelectorAll("[data-ref]").forEach(e=>e.style.display=c.checked?"":"none");
+    else if(l==="areas"){ map.setLayoutProperty("areas-line","visibility",v); map.setLayoutProperty("areas-case","visibility",v); document.querySelectorAll(".zlab").forEach(e=>e.style.display=c.checked?"":"none"); }
+    else map.setLayoutProperty(l,"visibility",v);
+  });
+}
+function factorRows(F,w){ return `<div class="pf">${FACT.map((k,j)=>`<span>${NAMES[k]} <small style="color:var(--mute)">${Math.round(w[j]*100)}%</small></span><span>${F[j].toFixed(2)}</span><div class="b"><i style="width:${F[j]*100}%"></i></div>`).join("")}</div>`; }
+function hexRaw(h){ const p=HEX.features[h].properties;
+  return `<div class="kv"><span>Nearest supermarket</span><b>${esc(p.sm||"none reachable")}${p.smm!=null?" · "+p.smm+" min walk":""}</b></div><div class="kv"><span>Nearest station</span><b>${esc(p.st||"none")}${p.stm!=null?" · "+p.stm+" min walk":""}</b></div>
+  <div class="kv"><span>SNAP households</span><b>${pct(p.sn)}</b></div><div class="kv"><span>Poverty rate</span><b>${pct(p.pv)}</b></div><div class="kv"><span>Residents within 10 min walk</span><b>${fmt(p.rp)}</b></div><div class="kv"><span>Supermarkets within 10 min</span><b>${p.ns}</b></div>`; }
+function areaPopup(b,k){
+  const t=TOPA[b][k], w=norm(W), c=t.c, F=areaFactors(c);
+  return `<h3>${esc(hexName(c))}</h3><div class="m">${BORO[b]} · area ${b}${k+1} of ${NB.nb1[c].length} hexagons</div><div style="font:700 20px var(--sans);color:var(--highlight)">${t.score.toFixed(2)} <small style="font:12px var(--sans);color:var(--mute)">area score</small></div><div style="margin:3px 0">${badge(t.stab)}</div>${factorRows(F,w)}
+  <div class="kv"><span>Residents in the area</span><b>${fmt(areaPeople(c))}</b></div>${hexRaw(c)}`;
+}
+function hexPopup(h){ const p=HEX.features[h].properties, w=norm(W), F=Array.from({length:NF},(_,j)=>HF[h*NF+j]);
+  return `<h3>Hexagon score ${HS[h].toFixed(2)}</h3><div class="m">${esc(p.nta||"")}${p.nta?" · ":""}${BORO_ALL[p.b]} · ${fmt(p.pop)} residents</div>${factorRows(F,w)}${hexRaw(h)}`; }
+function onClick(e){
+  const pad=7, box=[[e.point.x-pad,e.point.y-pad],[e.point.x+pad,e.point.y+pad]];
+  const vis=["supers","stations"].filter(l=>map.getLayoutProperty(l,"visibility")!=="none");
+  const pt = vis.length ? map.queryRenderedFeatures(box,{layers:vis})[0] : null;
+  if(pt){ const p=pt.properties, isStore=pt.layer.id==="supers";
+    new maplibregl.Popup({maxWidth:"260px"}).setLngLat(pt.geometry.coordinates).setHTML(`<h3>${esc(p.n)}</h3><div class="m">${isStore?`Counted as a full-service supermarket · ${fmt(p.sf)} sq ft`:"Subway / Staten Island Railway station"}</div>`).addTo(map); return; }
+  const hx = map.queryRenderedFeatures(e.point,{layers:["hex"]})[0];
+  if(hx){ const h=hexIdx.get(hx.properties.id); new maplibregl.Popup({maxWidth:"300px"}).setLngLat(e.lngLat).setHTML(hexPopup(h)).addTo(map); }
+}
+function flyArea(b,k){ const t=TOPA[b][k]; if(!t) return; const c=centre(t.c); map.flyTo({center:c,zoom:13.2,duration:900}); setTimeout(()=>new maplibregl.Popup({maxWidth:"300px"}).setLngLat(c).setHTML(areaPopup(b,k)).addTo(map),950); }
+
+/* ---------- methods ---------- */
+function methodsHTML(){
+  const C=META.config, w=META.weights;
+  const T=(k,what,src,tag,t)=>`<tr><td><b>${NAMES[k]}</b></td><td>${what}</td><td>${src}</td><td>${(w[k]*100).toFixed(1).replace(/\.0$/,"")}%</td><td><span class="tag ${tag}">${t}</span></td></tr>`;
+  return `<h3>Methods and limits</h3><p class="note"><b>Not a prediction of the City's choices.</b> Independent analysis, not affiliated with the City of New York, NYCEDC or the Mayor's Office.</p>
+  <h4>What it does</h4><p class="note">It scores every hexagon in NYC (H3 resolution 9, about 0.1 km²) on five location factors, then ranks <b>areas</b> in Brooklyn, Queens and Staten Island. An area is a hexagon plus its same-borough neighbours (up to 7 hexagons, roughly a kilometre across) scored as the average. Areas are picked best first and cannot overlap. There are <b>no lot or site criteria</b>: the model says where to look, not which parcel is available.</p>
+  <h4>Factors</h4><table><thead><tr><th>Factor</th><th>What it measures</th><th>Source</th><th>Weight</th><th>Origin</th></tr></thead><tbody>
+  ${T("need","Network walk distance to the nearest full-service supermarket, SNAP household share, poverty share (equal thirds)","NYS Retail Food Stores; ACS 2020-24 B22010, S1701; OSM walk network","plan","From the Plan")}
+  ${T("low_saturation","Inverse of full-service supermarkets within a 10-minute walk per 1,000 residents in reach","NYS Retail Food Stores; ACS; OSM","plan","From the Plan (existing retail density)")}
+  ${T("walk_reach","Residents within a 10-minute walk (foot traffic and access)","ACS block-group population; OSM","plan","From the Plan (access)")}
+  ${T("transit","Walk time to the nearest subway/SIR station plus bus stops within 400 m","MTA stations; MTA bus GTFS","added","Added by analyst, not a stated City criterion")}
+  ${T("corridor_anchor","Retail floor area within 400 m (proxy for ground-floor retail and foot traffic to nearby businesses)","MapPLUTO retail area","plan","From the Plan; PLUTO proxy")}
+  </tbody></table><p class="note">Every factor is a percentile rank across all NYC hexagons. The weights are the five factors' original proportions, rescaled to sum to 100% after the site factor was dropped. Move the sliders to change them.</p>
+  <h4>Judgment calls</h4><ul>
+  <li><b>Full-service supermarket</b> has no field in the data. Proxy: ${fmt(C.SUPERMARKET_MIN_SQFT)} to ${fmt(C.SUPERMARKET_MAX_SQFT)} sq ft, excluding warehouse clubs, wholesale, pharmacies, general merchandise, delis, bakeries, dollar stores and distributors (${META.nSupermarkets} stores).</li>
+  <li><b>Areas</b> need at least ${fmt(META.minReachPop)} residents within a 10-minute walk of their centre, so empty land is not ranked. The weights, the equal thirds inside Need and the 50/50 split inside Transit are my judgment.</li>
+  <li><b>Stability</b> = share of 500 random weightings (each weight varied by up to &plusmn;50%) in which an area overlaps one of its borough's top 3. It tests the weights, not the data.</li></ul>
+  <h4>Limits</h4><ul>
+  <li>No information on which sites are available, zoned for a grocery, or for sale or lease. Use the areas to shortlist neighbourhoods, then look for sites.</li>
+  <li>The supermarket list may lag openings and closings, and square footage is self-reported.</li>
+  <li>No price, rent or sales data; "ability to sustain operations" is represented only by reach and transit.</li>
+  <li>Retail density rewards existing corridors; the model does not measure displacement of existing retailers.</li>
+  <li>Areas at the water's edge can include hexagons with few residents, so a coastal area's resident count can be small.</li>
+  <li>Hexagons near the Nassau County line do not see residents or stores across the border.</li>
+  <li>ACS estimates have margins of error that are not shown. Reference-site coordinates come from a geocoder and are approximate.</li></ul>
+  <h4>Sources</h4><p class="note">NYS Retail Food Stores (updated ${esc(META.sources.stores.updated)}); ACS 5-year ${esc(META.sources.acs.vintage)}; MapPLUTO ${esc(META.sources.pluto.version)}; MTA subway stations and bus GTFS; OpenStreetMap walk network; NYC 2020 Neighborhood Tabulation Areas; Census cartographic boundaries.</p>`;
+}
+boot().catch(e=>{ document.body.insertAdjacentHTML("afterbegin",`<pre style="position:fixed;z-index:99;background:#111417;padding:12px;color:#ff8a8a">${esc(e.stack||e)}</pre>`); console.error(e); });
+</script>
+</body>
+</html>

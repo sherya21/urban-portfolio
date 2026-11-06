@@ -1,0 +1,62 @@
+/* GENERATED from tokens.json by build.py. Do not edit by hand. */
+:root {
+  --bg: #111417;
+  --panel: #171b1e;
+  --ink: #f2f2f2;
+  --muted: #b8bec2;
+  --faint: #7b8388;
+  --grid: #262c30;
+  --line: #2e353a;
+  --no-data: #3a4045;
+  --accent: #3b6fff;
+  --highlight: #fcee5a;
+  --accent-alt: #f0833a;
+  --rate-1: #5b1a8f;
+  --rate-2: #b5367a;
+  --rate-3: #f0833a;
+  --rate-4: #fcee5a;
+  --cat-1: #fcee5a;
+  --cat-2: #f0833a;
+  --cat-3: #e0509a;
+  --cat-4: #9a5be0;
+  --cat-5: #c9b6f0;
+  --cat-6: #f6d9b8;
+  --font: Bahnschrift, "Segoe UI", system-ui, sans-serif;
+  --fs-title: 37px; --fs-subtitle: 19px;
+  --fs-label: 15px; --fs-caption: 12px;
+}
+:root[data-theme="light"] {
+  --bg: #f6f4ef;
+  --panel: #eae7e0;
+  --ink: #14171a;
+  --muted: #454d52;
+  --faint: #646c71;
+  --grid: #dcd8cf;
+  --line: #cfcac0;
+  --no-data: #cbc7bd;
+  --accent: #1b4fd8;
+  --highlight: #5b1a8f;
+  --accent-alt: #c95a12;
+  --rate-1: #fcee5a;
+  --rate-2: #f0833a;
+  --rate-3: #b5367a;
+  --rate-4: #5b1a8f;
+  --cat-1: #5b1a8f;
+  --cat-2: #b5367a;
+  --cat-3: #c95a12;
+  --cat-4: #7a6a00;
+  --cat-5: #8a6fc0;
+  --cat-6: #a0522d;
+}
+html, body { background: var(--bg); color: var(--ink); font-family: var(--font); margin: 0; }
+.brand-title { font-size: var(--fs-title); font-weight: 300; margin: 0; color: var(--ink); }
+.brand-subtitle { font-size: var(--fs-subtitle); color: var(--muted); margin: 4px 0 0; }
+.brand-tag { font-size: var(--fs-caption); color: var(--accent); letter-spacing: .04em; }
+.brand-label { font-size: var(--fs-label); font-weight: 600; color: var(--muted); }
+.brand-source { font-size: var(--fs-caption); color: var(--faint); }
+.brand-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--panel); color: var(--ink); }
+.leaflet-bar a, .leaflet-bar a:hover { background: var(--panel); color: var(--ink); border-color: var(--line); }
+.leaflet-container { background: var(--bg); font-family: var(--font); }
+.leaflet-container a { color: var(--accent); }
+.leaflet-control-attribution { background: color-mix(in srgb, var(--bg) 80%, transparent) !important; color: var(--faint) !important; }
