@@ -15,7 +15,8 @@
 :root{--rate-1:#ffffff;--rate-2:#c5dcd0;--rate-3:#8bbaa1;--rate-4:#519872;--highlight:#6cb88d}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font:14px/1.45 var(--sans);background:var(--bg);color:var(--ink);display:grid;grid-template-columns:1fr 450px;overflow:hidden}
+body{font:14px/1.45 var(--sans);background:var(--bg);color:var(--ink);overflow:hidden}
+#app{display:grid;grid-template-columns:1fr 450px;height:100%;min-height:0}
 button,select,input{font:inherit;color:inherit}
 button{cursor:pointer}
 #mapwrap{position:relative;min-height:0}
@@ -98,13 +99,15 @@ footer{border-top:1px solid var(--line);padding:9px 18px;font-size:10.5px;color:
 .tag.plan{background:rgba(81,152,114,.25);color:#a6dcc0}.tag.added{background:rgba(255,255,255,.12);color:#ffffff}.tag.judg{background:var(--line);color:var(--muted)}
 .zlab{font:700 12px var(--sans);color:var(--ink);background:var(--bg);border:1.5px solid var(--ink);border-radius:5px;padding:0 5px;cursor:pointer;margin-bottom:2px}
 @media (max-width:900px){
-  body{grid-template-columns:1fr;grid-template-rows:55vh 1fr;overflow:auto}
+  body{overflow:auto}
+  #app{grid-template-columns:1fr;grid-template-rows:55vh 1fr}
   aside{border-left:0;border-top:1px solid var(--line)}
   #layers{font-size:11px}
 }
 </style>
 </head>
 <body>
+<div id="app">
 <div id="mapwrap">
   <div id="map"></div>
   <div class="panel" id="layers">
@@ -149,6 +152,7 @@ footer{border-top:1px solid var(--line);padding:9px 18px;font-size:10.5px;color:
 
   <footer id="foot"></footer>
 </aside>
+</div><!-- /app -->
 
 <div id="modal"><div class="box"><button class="x" id="close-methods" aria-label="Close">&times;</button><div id="methods"></div></div></div>
 
